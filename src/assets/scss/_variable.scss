@@ -1,0 +1,62 @@
+//color
+$black: #000 !default;
+$gray-1: #e6e7e8 !default;
+$gray-2: #a7a9ac !default;
+$gray-3: #797a7d !default;
+$gray-4: #636471 !default;
+$gray-5: #414042 !default;
+$white: #fff !default;
+
+$primary-color: #1b75bc;
+$secondary-color: #27aae1, #005c8a, #00a79d, #7c51a1, #005c8a;
+$text-color: #1d262b, #c8bbab, rgba(200, 187, 171, 0.5),
+  rgba(200, 187, 171, 0.2);
+$greys-color: #e6e7e8, #a7a9ac, #797a7d, #636471, #414042;
+
+$sidebar-bg: #1d262b;
+
+//Form
+$border-color: #d6d6d6;
+
+$form-validated: #dd1037;
+$form-focus: #24b6f7;
+$form-readonly: #1d262b;
+$form-disabled: #1d262b;
+
+$form-success: #10be37;
+$form-error: #dd1037;
+
+//Width
+$screen-width: 576px, 768px, 992px, 1200px;
+$container-width: 500px, 720px, 960px, 1140px;
+$padding-right-left: 15px, 15px;
+$form-content: 500px, 600px, 800px;
+
+@mixin clearfix() {
+  &::after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+}
+
+@mixin flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+}
+
+@mixin v-middle() {
+  -webkit-align-items: center;
+  align-items: center;
+}
+@mixin v-center() {
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+@mixin v-right() {
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}

@@ -1,0 +1,163 @@
+$border-color: #d6d6d6;
+$th-txt: #888;
+$th-bg: #f7f7f7;
+$td-txt: #333;
+$td-hover-bg: #ecf5ff;
+
+table {
+  width: 100%;
+  border-color: $border-color;
+}
+
+.el-table__fixed-right {
+  height: 100% !important;
+}
+.grid {
+  .grid-head {
+    @include flex;
+    height: 50px;
+
+    .toolbar {
+      position: relative;
+
+      .bar-group {
+        button {
+          margin-left: 0;
+          margin-right: 0;
+          background: #f7f7f7;
+          border-radius: 0;
+          &:first-child {
+            padding-left: 15px;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+          }
+          &:last-child {
+            padding-right: 15px;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+          }
+
+          &:hover {
+            background: #f2f2f2;
+          }
+
+          &:focus {
+            background: #ddd;
+          }
+        }
+      }
+    }
+
+    .pagination {
+      margin-left: auto;
+    }
+  }
+
+  .grid-body {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+
+    table {
+      min-width: 720px;
+      border-spacing: 0;
+      background: $white;
+
+      th {
+        height: 32px;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: left;
+        font-weight: normal;
+        font-size: 13px;
+        white-space: nowrap;
+        color: $th-txt;
+        background: $th-bg;
+        border-top: solid 1px $border-color;
+        border-bottom: solid 1px $border-color;
+        cursor: default;
+      }
+
+      td {
+        height: 40px;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: left;
+        font-size: 15px;
+        color: $td-txt;
+        border-bottom: solid 1px $border-color;
+        cursor: default;
+      }
+
+      tr:hover td {
+        background: $td-hover-bg;
+      }
+
+      .right {
+        text-align: right;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .form-group {
+        position: relative;
+      }
+
+      input[type='checkbox'] {
+        position: relative;
+
+        &:checked,
+        &:checked + .input-checkbox:after {
+          top: 6px;
+        }
+      }
+
+      .input-checkbox {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        margin: 0;
+        border-radius: 2px;
+        background: $white;
+
+        &:before {
+          top: 0;
+        }
+      }
+    }
+  }
+
+  .gird-foot {
+    @include flex;
+    height: 50px;
+    text-align: center;
+    .pagination {
+      margin-left: auto;
+    }
+  }
+
+  .toolbar {
+    @include flex;
+    @include v-middle;
+  }
+
+  .pagination {
+    @include flex;
+    @include v-middle;
+
+    .range {
+      margin-left: 15px;
+      margin-right: 15px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    button {
+      width: auto;
+      /*  */
+      overflow: hidden;
+    }
+  }
+}

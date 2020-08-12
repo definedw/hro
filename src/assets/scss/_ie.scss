@@ -1,0 +1,23 @@
+.ie {
+  .alert-ie {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    color: #fff;
+    background: #7c0c19;
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  .main-header {
+    .btn-toggle {
+      .icon-bar {
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+  }
+}

@@ -1,24 +1,17 @@
-# gov
+# README
 
-## Project setup
+### Init Project
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Plugin of VScode
+
 ```
-npm run serve
+Vue VS Code Extension
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Attention
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+required Node Version ^ 14.5

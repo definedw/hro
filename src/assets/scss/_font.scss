@@ -1,0 +1,60 @@
+body,
+input,
+textarea,
+select,
+button {
+  font-family: Franklin_Gothic_Book, 'Franklin Gothic Book', Helvetica, Futura,
+    Arial;
+  line-height: 1.2;
+  font-size: 1rem;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: Times_New_Roman, 'Times New Roman', Times, Georgia;
+  line-height: 1.2;
+  font-weight: 400;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.6rem;
+}
+h3 {
+  font-size: 1.3rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5 {
+  font-size: 0.95rem;
+}
+h6 {
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.94rem;
+  }
+  h2 {
+    font-size: 1.685rem;
+  }
+  h3 {
+    font-size: 1.314rem;
+  }
+  h4 {
+    font-size: 1.064rem;
+  }
+  h5 {
+    font-size: 0.938rem;
+  }
+  h6 {
+    font-size: 0.813rem;
+  }
+}
