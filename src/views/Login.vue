@@ -11,7 +11,7 @@
       </div>
       <el-form ref="ruleForm"
                :rules="rules"
-               model="ruleForm">
+               :model="ruleForm">
         <el-form-item prop="userName">
           <el-input v-model.trim="ruleForm.userName"
                     clearable
@@ -23,7 +23,8 @@
                     placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">登 录</el-button>
+          <el-button @click="loginIn"
+                     type="primary">登 录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -58,6 +59,26 @@ export default {
           }
         ]
       }
+    }
+  },
+  methods: {
+    loginIn() {
+      const url = `/api/login/login`
+      const params = {
+        loginType: '',
+        name: this.ruleForm.userName,
+        pwd: this.ruleForm.password
+      }
+      const _ = this
+      _.$http.post(url, params).then(res => {
+        console.log('Login right.', res)
+        _.$router.push({
+          path: '/dashboard'
+        })
+      }).catch(err => {
+        console.log('Login Faild.', err)
+        // _.$message.error(`${err.msg}`)
+      })
     }
   }
 }

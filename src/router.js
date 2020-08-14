@@ -3,13 +3,14 @@ import Router from 'vue-router'
 
 import Login from './views/Login'
 import Home from './views/Home'
-
 /* 404 Not Found Page */
 import NotFound from './views/NotFound'
 
+import { DashBoard } from './views/dashboard'
+
 Vue.use(Router)
 /* @namedscape rule
-   @ File Name ToupperCase
+   @ File Name To upperCase
    @ Name Low upper case */
 
 const router = new Router({
@@ -24,19 +25,27 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      redirect: '/home',
-      component: Home
-      // ,
-      // children: [
-      //   {
-
-      //   }
-      // ]
+      redirect: '/dashboard',
+      component: Home,
+      children: [
+        {
+          path: '/dashboard',
+          name: 'dashBoard',
+          component: DashBoard
+        }
+      ]
     },
     {
       path: '*',
-      redirect: '/notFound'
+      name: 'notFound',
+      component: NotFound
     }
   ]
+})
+router.afterEach((to, from) => {
+  router.app.$bus.emit('routerUpdate', {
+    to,
+    from
+  })
 })
 export default router

@@ -4,11 +4,17 @@ const Compression = require('compression-webpack-plugin')
 
 module.exports = {
   devServer: {
-    port: 1234,
+    port: 8080,
     host: '127.0.0.1',
     disableHostCheck: false,
     https: false,
     open: true, //配置自动启动浏览器
+    proxy: {
+      '^/api': {
+        target: 'http://39.96.87.185',
+        changeOrigin: true
+      }
+    },
     overlay: {
       warnings: true,
       errors: true

@@ -1,6 +1,6 @@
 <template>
-  <div>
-
+  <div style="text-align: center;margin: auto;">
+    Not Found Resource!
   </div>
 </template>
 

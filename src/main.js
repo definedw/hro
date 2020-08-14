@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from '@/router'
-import { http, auth, bus, store } from './plugins/'
+import eRouter from './router.js'
+import { http, auth, bus } from './plugins/'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import * as filters from '@/filters'
-
 
 import './assets/scss/index.scss'
 Vue.config.productionTip = false
@@ -13,6 +12,8 @@ Vue.config.productionTip = false
 Object.keys(filters).forEach(k => {
   Vue.filter(k, filters[k])
 })
+Vue.use(ElementUI)
+
 Vue.use(http)
 Vue.use(auth)
 Vue.use(bus)
@@ -36,7 +37,7 @@ Vue.filter('UTCTime', function (value) {
 })
 
 new Vue({
-  router,
+  router: eRouter,
   render: h => h(App)
 }).$mount('#app')
 

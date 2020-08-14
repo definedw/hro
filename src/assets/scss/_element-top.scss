@@ -7,10 +7,7 @@
 
   .el-menu-item,
   .el-submenu__title {
-    padding: 0 20px 0 60px !important;
-    height: 40px;
-    line-height: 40px;
-    //color: #9D8F8F;
+    padding: 0 40px 0 40px !important;
     color: white;
     &:hover {
       background: #2c373b;
@@ -55,19 +52,19 @@
     }
   }
 
-  .is-active {
-    background: #392d2d;
-    &:before {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 1;
-      content: '';
-      width: 3px;
-      background: nth($secondary-color, 1);
-    }
-  }
+  // .is-active {
+  //   background: #392d2d;
+  //   &:before {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     bottom: 0;
+  //     z-index: 1;
+  //     content: '';
+  //     width: 3px;
+  //     background: nth($secondary-color, 1);
+  //   }
+  // }
   .is-opened {
     background: #141e23;
     .el-submenu__title {

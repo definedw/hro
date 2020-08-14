@@ -2,15 +2,25 @@ import axios from 'axios'
 import router from '@/router'
 import { Message, Loading } from 'element-ui'
 import { storage } from '../utils'
+import Vue from 'vue'
+let v = new Vue()
 
 const WINDOW_URL = window.location.host
 
 axios.defaults.timeout = 10000
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www/form/urlencoded;charset=UTF-8'
+// if (WINDOW_URL === '') {
+//   axios.defaults.baseURL = '123.206'
+// } else {
+//   axios.defaults.baseURL = 'http://39.96.87.185'
+// }
+console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(
   config => {
+    console.log('validate axios')
     const token = storage.getToken()
     token && (config.Authorization = token)
     return config
@@ -22,20 +32,34 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    if (response.status === 200) {
-      let loadingInstance = Loading.service({ fullscreen: ture })
-      this.$nextTick(() => {
-        loadingInstance.close()
-      })
-      return Promise.resolve(response)
-    } else {
-      return Promise.reject(response)
+    const { code, msg } = response.data
+    switch (code) {
+      case 0: {
+        let loadingInstance = Loading.service({ fullscreen: true })
+        v.$nextTick(() => {
+          loadingInstance.close()
+        })
+        return response.data.list || {}
+      }
+      default: {
+        Message({
+          message: msg,
+          type: 'warning',
+          duration: 2000
+        })
+        return Promise.reject({ code, msg })
+      }
     }
   },
   error => {
-    const { status } = error.response
-    switch (status) {
+    const eStatus = error.response.status
+    switch (eStatus) {
       case 401:
+        Message({
+          message: '登录过期，请重新登录',
+          type: 'error',
+          duration: 1500
+        })
         router.replace({
           path: '/login',
           query: {
@@ -45,40 +69,33 @@ axios.interceptors.response.use(
         break
       case 403:
         Message({
-          message: '登陆过期，请重新登录.',
-          duration: 1000,
-          type: 'warning'
+          message: '资源禁止访问',
+          type: 'error',
+          duration: 2000
         })
-        storage.removeToken()
-        setTimeout(() => {
-          router.replace({
-            path: '/login',
-            query: {
-              redirect: router.currentRoute.fullPath
-            }
-          })
-        }, 1000)
         break
       case 404:
         Message({
-          message: '请求不存在',
-          duration: 1500,
-          type: 'warning'
+          message: '访问的资源不存在',
+          type: 'warning',
+          duration: 1500
         })
         break
-      default:
+      default: {
         Message({
-          message: `${error.response.msg}`,
-          duration: 1500,
-          type: 'warning'
+          message: msg || `请求错误`,
+          type: 'warning',
+          duration: 1500
         })
+      }
     }
-    return Promise.reject(error.response)
+    return Promise.reject(error)
   }
+
 )
 
-function baseUrl() {
-  return axios.defaults.baseUrl
+function baseURL() {
+  return axios.defaults.baseURL
 }
 function sendRequest(method, url, data, meta) {
   const options = {
@@ -92,20 +109,20 @@ function sendRequest(method, url, data, meta) {
     [options[method]]: data,
     meta
   }).catch(error => {
-    let loadingInstance = Loading.service({ fullscreen: ture })
-    this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+    let loadingInstance = Loading.service({ fullscreen: true })
+    v.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
       loadingInstance.close()
     })
     throw error
   })
 }
 function get(url, params, meta) {
-  Loading.service({ fullscreen: ture })
+  Loading.service({ fullscreen: true })
   return sendRequest('get', url, params, meta)
 }
 
 function post(url, data, meta) {
-  Loading.service({ fullscreen: ture })
+  Loading.service({ fullscreen: true })
   return sendRequest('post', url, data, meta)
 }
 function download(url, data) {
