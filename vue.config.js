@@ -1,5 +1,5 @@
 const DEBUG = process.env.NODE.ENV !== 'production' ? true : false
-const Terser = require('terser-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const Compression = require('compression-webpack-plugin')
 
 module.exports = {
@@ -54,7 +54,7 @@ module.exports = {
           }
         },
         minimizer: [
-          new Terser({
+          new TerserPlugin({
             cache: true,
             parallel: true,
             sourceMap: true, // Must be set to true if using source-maps in production

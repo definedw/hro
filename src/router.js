@@ -7,6 +7,8 @@ import Home from './views/Home'
 import NotFound from './views/NotFound'
 
 import { DashBoard } from './views/dashboard'
+import { Agenda } from './views/agenda'
+import { OverAgenda } from './views/overagenda'
 
 Vue.use(Router)
 /* @namedscape rule
@@ -32,7 +34,17 @@ const router = new Router({
           path: '/dashboard',
           name: 'dashBoard',
           component: DashBoard
-        }
+        },
+        {
+          path: '/agenda',
+          name: 'agenda',
+          component: Agenda
+        },
+        {
+          path: '/overAgenda',
+          name: 'overAgenda',
+          component: OverAgenda
+        },
       ]
     },
     {

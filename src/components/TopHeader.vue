@@ -9,10 +9,18 @@
           <li class="link-item"><a href="">test url</a></li>
         </ul>
         <div class="user-info">
-          <div class="text-link">
+          <div class="text-link"
+               v-if="!isLogin">
             <span @click="navLogin"
                   class="link-text">登录</span><span>|</span><span @click="navRegister"
                   class="link-text">注册</span>
+          </div>
+          <div class="user-info_box"
+               v-else>
+            <span class="link-text">{{ userName }}</span>
+            <span>|</span>
+            <span @click="loginOut"
+                  class="link-text">退出</span>
           </div>
         </div>
       </div>
@@ -25,8 +33,12 @@ export default {
   name: 'topHeader',
   data() {
     return {
-
+      isLogin: false,
+      userName: null
     }
+  },
+  created() {
+    this.getUserInfo()
   },
   methods: {
     navLogin() {
@@ -37,6 +49,25 @@ export default {
     navRegister() {
       this.$router.push({
         path: '/register'
+      })
+    },
+    getUserInfo() {
+      const url = `/api/login/getAuthor`
+      this.$http.post(url, {}).then(res => {
+        console.log('User Info.', res)
+        if (res.flag) {
+          this.isLogin = true
+          this.userName = res.list.sysStaff.staffName
+        }
+      }).catch(err => {
+        console.log('Get UserInfo Request Faild.', err)
+      })
+    },
+    loginOut() {
+      const url = `/api/login/loginOut`
+      this.$http.post(url, {}).then(res => {
+        console.log('Login Out', res)
+        this.isLogin = false
       })
     }
   }

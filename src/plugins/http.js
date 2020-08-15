@@ -9,11 +9,11 @@ const WINDOW_URL = window.location.host
 
 axios.defaults.timeout = 10000
 
-// if (WINDOW_URL === '') {
-//   axios.defaults.baseURL = '123.206'
-// } else {
-//   axios.defaults.baseURL = 'http://39.96.87.185'
-// }
+if (WINDOW_URL === '') {
+  axios.defaults.baseURL = '123.206'
+} else {
+  axios.defaults.baseURL = 'http://39.96.87.185'
+}
 console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.defaults.withCredentials = true
@@ -39,7 +39,7 @@ axios.interceptors.response.use(
         v.$nextTick(() => {
           loadingInstance.close()
         })
-        return response.data.list || {}
+        return response.data || {}
       }
       default: {
         Message({
