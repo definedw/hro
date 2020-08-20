@@ -4,8 +4,8 @@
 
       <div class="login-box">
         <div class="login-logo">
-          <!-- <img src="../assets/staff/login-logo.png"
-             alt="Top Education Institute" /> -->
+          <img src="../assets/logo.png"
+               alt="Top Education Institute" />
         </div>
         <div class="login-head border-bottom">
           <h1>登 录</h1>
@@ -45,9 +45,11 @@ export default {
       const reg = /^[0-9A-Za-z_.]/g
       if (!this.ruleForm.userName) {
         return callback(new Error('请输入用户名'))
-      } else if (this.ruleForm.userName && !reg.test(this.ruleForm.userName)) {
-        return callback(new Error('请输入正确的用户名，不包含特殊字符'))
-      } else {
+      }
+      // else if (this.ruleForm.userName && !reg.test(this.ruleForm.userName)) {
+      //   return callback(new Error('请输入正确的用户名，不包含特殊字符'))
+      // } 
+      else {
         callback()
       }
     }

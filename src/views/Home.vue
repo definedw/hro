@@ -1,7 +1,7 @@
 <template>
   <div>
     <top-header></top-header>
-    <nav-menu></nav-menu>
+    <!-- <nav-menu></nav-menu> -->
     <div class="main">
       <keep-alive>
         <router-view />

@@ -27,12 +27,12 @@ const menuList = [
     index: '0'
   },
   {
-    name: '待办事项',
+    name: '诉求办理',
     url: '/agenda',
     index: '1'
   },
   {
-    name: '已办结',
+    name: '数据报表',
     url: '/overagenda',
     index: '2'
   },

@@ -9,11 +9,11 @@ const WINDOW_URL = window.location.host
 
 axios.defaults.timeout = 10000
 
-if (WINDOW_URL === '') {
-  axios.defaults.baseURL = '123.206'
-} else {
-  axios.defaults.baseURL = 'http://39.96.87.185'
-}
+// if (WINDOW_URL === '') {
+//   axios.defaults.baseURL = '123.206'
+// } else {
+//   axios.defaults.baseURL = 'http://39.96.87.185'
+// }
 console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.defaults.withCredentials = true
@@ -101,7 +101,8 @@ function sendRequest(method, url, data, meta) {
   const options = {
     get: 'params',
     post: 'data',
-    download: 'data'
+    download: 'data',
+    delete: 'data'
   }
   return axios({
     method,
@@ -125,6 +126,12 @@ function post(url, data, meta) {
   Loading.service({ fullscreen: true })
   return sendRequest('post', url, data, meta)
 }
+
+function aDelete(url, data) {
+  Loading.service({ fullscreen: true })
+  return sendRequest('delete', url, data)
+}
+
 function download(url, data) {
   return axios({
     method: 'post',
@@ -144,7 +151,8 @@ export default class Api {
           baseURL,
           get,
           post,
-          download
+          download,
+          aDelete
         }
       }
     })

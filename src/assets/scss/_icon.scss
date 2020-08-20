@@ -1,0 +1,45 @@
+.el-icon-my-audit {
+  background: url('~@/assets/icon/audit.svg') center no-repeat;
+  background-size: cover;
+}
+.el-icon-my-audit:before {
+  content: '\66ff';
+  font-size: 14px;
+  visibility: hidden;
+}
+.el-icon-my-unaudit {
+  background: url('~@/assets/icon/unAudit.svg') center no-repeat;
+  background-size: cover;
+}
+.el-icon-my-audit:before {
+  content: '\66ff';
+  font-size: 14px;
+  visibility: hidden;
+}
+.el-icon-my-inaudit {
+  background: url('~@/assets/icon/inAudit.svg') center no-repeat;
+  background-size: cover;
+}
+.el-icon-my-inaudit:before {
+  content: '\66ff';
+  font-size: 14px;
+  visibility: hidden;
+}
+.el-icon-my-complete {
+  background: url('~@/assets/icon/complete.svg') center no-repeat;
+  background-size: cover;
+}
+.el-icon-my-complete:before {
+  content: '\66ff';
+  font-size: 14px;
+  visibility: hidden;
+}
+.el-icon-my-ontime {
+  background: url('~@/assets/icon/ontime.svg') center no-repeat;
+  background-size: cover;
+}
+.el-icon-my-ontime:before {
+  content: '\66ff';
+  font-size: 14px;
+  visibility: hidden;
+}

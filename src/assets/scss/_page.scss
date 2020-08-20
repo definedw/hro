@@ -71,7 +71,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  // background: #333 url('~@/assets/staff/bg.jpg') no-repeat center center;
+  // background: #333 url('~@/assets/logo.jpeg') no-repeat center center;
   -webkit-background-size: cover;
   background-size: cover;
 }
@@ -192,7 +192,7 @@
   @include flex;
   @include v-middle;
   @include pixelborder(bottom, #ddd, 0);
-  position: absolute;
+  // position: absolute;
   top: 48px;
   right: 0;
   left: 0;
@@ -234,7 +234,7 @@
 }
 
 .page-tab {
-  padding-top: 30px;
+  // padding-top: 30px;
 
   .tab-wrap {
     height: 40px;
