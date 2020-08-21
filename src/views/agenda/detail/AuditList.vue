@@ -78,6 +78,7 @@
     <audit-dialog v-if="visible"
                   :title="title"
                   :id="id"
+                  :type="computeSubType"
                   :visible="visible"
                   @close="visible = false"
                   @handleUpdate="handleUpdate"></audit-dialog>
@@ -109,6 +110,17 @@ export default {
       visible: false
     }
   },
+  computed: {
+    computeSubType() {
+      if (this.deptType === 1) {
+        return 'setDate'
+      } else if (this.deptType === 2) {
+        return 'audit'
+      } else {
+        return ''
+      }
+    }
+  },
   methods: {
     pre(v) {
       this.pageNum = v
@@ -129,7 +141,6 @@ export default {
     handleUpdate(val) {
       console.log('Handle update')
       this.getList()
-
     },
     showDetail(row) {
       this.$emit('menuTab', row)
@@ -159,6 +170,11 @@ export default {
     showAudit(row) {
       this.visible = true
       this.title = '审核'
+      this.id = row.detailId
+    },
+    setDate(row) {
+      this.visible = true
+      this.title = '办理天数'
       this.id = row.detailId
     }
   },

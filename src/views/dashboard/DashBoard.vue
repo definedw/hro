@@ -9,22 +9,34 @@
               <el-col :span="4"
                       v-if="deptType === 1">
                 <div class="inner">
-                  <el-button @click="addCheckIn"
-                             type="primary">诉求登记</el-button>
+                  <div class="inner-title">
+                    诉求登记
+                  </div>
+                  <div @click="addCheckIn"
+                       class="inner-btn">诉求登记</div>
+                  <!-- <el-button @click="addCheckIn"
+                             type="primary">诉求登记</el-button> -->
                 </div>
               </el-col>
               <el-col :span="4">
                 <div class="inner">
-                  <el-button type="info">在办件数{{ onCount }}</el-button>
+                  <div class="inner-title">
+                    在办件数
+                  </div>
+                  <div class="inner-count"><span class="sub-text">在办件数：</span>{{onCount}}</div>
+                  <!-- <el-button type="info">在办件数{{ onCount }}</el-button> -->
                 </div>
               </el-col>
               <el-col :span="4">
                 <div class="inner">
-                  <el-button type="success">办结件数{{ isCount }}</el-button>
+                  <div class="inner-title">
+                    办结件数
+                  </div>
+                  <div class="inner-count"><span class="sub-text">办结件数：</span>{{isCount}}</div>
                 </div>
               </el-col>
               <el-col :span="8"
-                      style="border: solid 1px #ccc;padding-top: 15px;border-radius: 5px;">
+                      style="padding-top: 15px;background: #d5e4ef;">
                 <div id="mainThree"
                      :style="{width: '100%', height: '242px'}"></div>
               </el-col>
@@ -120,8 +132,9 @@ export default {
   name: 'dashBoard',
   components: { CheckIn },
   data() {
+    const deptType = sessionStorage.getItem('deptType') - 0
     return {
-      deptType: parseInt(sessionStorage.getItem('deptType')),
+      deptType: null,
       /* pageniation */
       pageNum: 1,
       pageSize: 15,
@@ -148,8 +161,6 @@ export default {
       yAxis3: [],
       ratioData: []
     }
-  },
-  created() {
   },
   computed: {
     options() {
@@ -371,12 +382,24 @@ export default {
         mainThree.resize()
       })
     },
+    getUserInfo() {
+      const url = `/api/login/getAuthor`
+      this.$http.post(url, {}).then(res => {
+        console.log('User Info.', res)
+        if (res.flag) {
+          this.deptType = res.list.sysDept.deptType - 0
+        }
+      }).catch(err => {
+        console.log('Get UserInfo Request Faild.', err)
+      })
+    },
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     }
   },
   mounted() {
+    this.getUserInfo()
     this.getHomeList()
     this.getYearData()
     this.getCount()
@@ -384,6 +407,8 @@ export default {
     this.getMouthData()
   },
   activated() {
+    this.getUserInfo()
+
     this.getHomeList()
     this.getYearData()
     this.getCount()
@@ -404,7 +429,50 @@ export default {
   display: block;
   padding: 10px;
   height: 260px;
-  border: solid 1px #ccc;
-  border-radius: 5px;
+  background: #d5e4ef;
+  position: relative;
+  text-align: center;
+  .inner-title {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    padding-left: 10px;
+    text-align: left;
+    color: #333;
+    font-weight: 400;
+    background: #8d8680;
+  }
+  .inner-btn {
+    margin-top: 80px;
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 300;
+    border-radius: 2px;
+    border: solid 1px #ccc;
+    text-align: center;
+  }
+  .inner-count {
+    padding-top: 80px;
+    display: inline-block;
+    vertical-align: baseline;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #000;
+    .sub-text {
+      font-size: 14px;
+      font-weight: 300;
+    }
+  }
 }
 </style>

@@ -7,7 +7,8 @@
       <div class="page-form">
         <el-form :model="ruleForm"
                  ref="ruleForm"
-                 :rules="rules">
+                 :rules="rules"
+                 v-if="type === 'audit'">
           <el-form-item prop="isAuth"
                         :rules="{required: true, message: '请先完结此流程', trigger: 'blur'}"
                         label="是否通过审批">
@@ -23,11 +24,42 @@
           </el-form-item>
           <el-form-item v-if="ruleForm.isAuth === 2"
                         prop="rejectReason"
-                        label="拒绝理由">
+                        label="拒绝理由"
+                        :rules="{required: true, message: '请填写拒绝理由', trigger: 'blur'}">
             <el-input v-model="ruleForm.rejectReason"
                       clearable
                       type="textarea"
                       label="请描述拒绝理由"
+                      limit="2000"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <el-form :model="eRuleForm"
+                 ref="eRuleForm"
+                 :rules="rules"
+                 v-else-if="type === 'setDate'">
+          <el-form-item prop="dayNumber"
+                        label="办理天数"
+                        :rules="{required: true, message: '请填写办理天数', trigger: 'blur'}">
+            <el-input v-model="eRuleForm.dayNumber"
+                      clearable
+                      @input.native="eRuleForm.dayNumber=eRuleForm.dayNumber.replace(/^[\D]/g, '')"
+                      label="办理天数"
+                      limit="2"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <el-form :model="anRuleForm"
+                 ref="anRuleForm"
+                 :rules="rules"
+                 v-else>
+          <el-form-item prop="detailDescribe"
+                        label="办结回复"
+                        :rules="{required: true, message: '请填写办结理由', trigger: 'blur'}">
+            <el-input v-model="anRuleForm.detailDescribe"
+                      clearable
+                      label="请填写办结回复"
+                      type="textarea"
                       limit="2000"></el-input>
           </el-form-item>
 
@@ -46,7 +78,7 @@
 <script>
 export default {
   name: 'auditDialog',
-  props: ['visible', 'id', 'title'],
+  props: ['visible', 'id', 'title', 'type'],
   data() {
     const t = new Date()
     const y = t.getFullYear(),
@@ -55,11 +87,18 @@ export default {
     const endDate = `${y}-${m}-${d}`
     return {
       show: this.visible,
+      etype: this.type,
       ruleForm: {
         detailId: null,
         isAuth: null,
         rejectReason: null,
         endDate: endDate
+      },
+      eRuleForm: {
+        dayNumber: null
+      },
+      anRuleForm: {
+        detailDescribe: null
       },
       rules: {
 
@@ -78,37 +117,92 @@ export default {
   },
   methods: {
     modifySubmit() {
-      const url = `/api/question/afreshAssign`
+      const url = `/api/question/isAuditAuth`
+      const eUrl = `/api/question/afreshAssign`
+      const anUrl = `/api/question/done`
       const params = {
         detailId: this.id,
         isAuth: this.ruleForm.isAuth,
-        // isAuth: '2',
         rejectReason: this.ruleForm.rejectReason || null,
         endDate: this.ruleForm.endDate
+      },
+        eParams = {
+          detailId: this.id,
+          dayNumber: this.eRuleForm.dayNumber
+        },
+        anParams = {
+          id: this.id,
+          detailDescribe: this.anRuleForm.detailDescribe
+        }
+      const TYPE = this.etype
+      switch (TYPE) {
+        case 'audit':
+          this.$refs['ruleForm'].validate(valid => {
+            if (valid) {
+              this.$http.post(url, params).then(res => {
+                console.log('Audit Submit.', res)
+                this.$message.success('提交成功')
+                this.$emit('close')
+                this.$emit('handleUpdate', true)
+              }).catch(err => {
+                console.log('Check In Faild.', err)
+                this.$message.error('登记失败')
+                this.$emit('handleUpdate', false)
+              })
+            } else {
+              console.log('Validate Faild')
+            }
+          })
+          break
+        case 'setDate':
+          this.$refs['eRuleForm'].validate(valid => {
+            if (valid) {
+              this.$http.post(eUrl, eParams).then(res => {
+                console.log('Audit Submit.', res)
+                this.$message.success('提交成功')
+                this.$emit('close')
+                this.$emit('handleUpdate', true)
+              }).catch(err => {
+                console.log('Check In Faild.', err)
+                this.$message.error('提交失败，请稍后重试')
+                this.$emit('handleUpdate', false)
+              })
+            } else {
+              console.log('Validate Faild')
+            }
+          })
+          break
+        default:
+          this.$refs['anRuleForm'].validate(valid => {
+            if (valid) {
+              this.$http.post(anUrl, anParams).then(res => {
+                console.log('Audit Submit.', res)
+                this.$message.success('提交成功')
+                this.$emit('close')
+                this.$emit('handleUpdate', true)
+              }).catch(err => {
+                console.log('Check In Faild.', err)
+                this.$message.error('登记失败')
+                this.$emit('handleUpdate', false)
+              })
+            } else {
+              console.log('Validate Faild')
+            }
+          })
       }
 
-      this.$refs['ruleForm'].validate(valid => {
-        if (valid) {
-          this.$http.post(url, params).then(res => {
-            console.log('Audit Submit.', res)
-            this.$message.success('提交成功')
-            this.$emit('close')
-            this.$emit('handleUpdate', true)
-          }).catch(err => {
-            console.log('Check In Faild.', err)
-            this.$message.error('登记失败')
-            this.$emit('handleUpdate', false)
-          })
-        } else {
-          console.log('Validate Faild')
-        }
-      })
     }
   },
   watch: {
     show(val) {
       this.show = val
+    },
+    etype(val) {
+      this.etype = val
     }
+  },
+  mounted() {
+    console.log(this.$refs)
   }
 }
 </script>

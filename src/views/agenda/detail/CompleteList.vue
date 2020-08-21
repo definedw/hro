@@ -108,7 +108,7 @@ export default {
     showDetail(row) {
       this.$emit('menuTab', row)
       this.$router.push(
-        '/agenda/complete/' + row.id
+        '/agenda/complete/' + row.detailId
       )
     },
     getList() {

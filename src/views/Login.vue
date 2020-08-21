@@ -7,9 +7,9 @@
           <img src="../assets/logo.png"
                alt="Top Education Institute" />
         </div>
-        <div class="login-head border-bottom">
+        <!-- <div class="login-head border-bottom">
           <h1>登 录</h1>
-        </div>
+        </div> -->
         <div class="page-form">
           <el-form ref="ruleForm"
                    :rules="rules"

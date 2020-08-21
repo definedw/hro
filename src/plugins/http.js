@@ -2,6 +2,7 @@ import axios from 'axios'
 import router from '@/router'
 import { Message, Loading } from 'element-ui'
 import { storage } from '../utils'
+import FileSaver from 'file-saver'
 import Vue from 'vue'
 let v = new Vue()
 
@@ -9,11 +10,11 @@ const WINDOW_URL = window.location.host
 
 axios.defaults.timeout = 10000
 
-// if (WINDOW_URL === '') {
-//   axios.defaults.baseURL = '123.206'
-// } else {
-//   axios.defaults.baseURL = 'http://39.96.87.185'
-// }
+if (WINDOW_URL === '') {
+  axios.defaults.baseURL = '123.206'
+} else {
+  axios.defaults.baseURL = 'http://39.96.87.185'
+}
 console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.defaults.withCredentials = true
@@ -31,7 +32,27 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
+
   response => {
+    if (response.data instanceof Blob) {
+      try {
+        const { data } = response
+        const fileName = response.headers.filename || new Date().getTime()
+        if (data) {
+          if (data && data.type != 'application/json') {
+            FileSaver.saveAs(response.data, fileName)
+          }
+        } else {
+          Message({ type: 'info', message: '暂无可导出项.' })
+        }
+        return { fileName: fileName }
+      } catch (error) {
+        return Promise.reject({
+          code: 500,
+          msg: '文件导出失败'
+        })
+      }
+    }
     const { code, msg } = response.data
     switch (code) {
       case 0: {
@@ -134,7 +155,7 @@ function aDelete(url, data) {
 
 function download(url, data) {
   return axios({
-    method: 'post',
+    method: 'get',
     url,
     data,
     responseType: 'blob'

@@ -9,7 +9,7 @@ import NotFound from './views/NotFound'
 import { DashBoard } from './views/dashboard'
 import { Agenda, Audit, InAudit, OnTime, Complete } from './views/agenda'
 import { AuditDetail, AuditList, OnTimeList, OnTimeDetail, CompleteList, CompleteDetail } from './views/agenda'
-
+import { Detail } from './views/agenda'
 import { OverAgenda } from './views/overagenda'
 
 Vue.use(Router)
@@ -40,6 +40,7 @@ const router = new Router({
         {
           path: '/agenda',
           name: 'agenda',
+          redirect: '/agenda/audit',
           component: Agenda,
           children: [
             {
@@ -55,8 +56,8 @@ const router = new Router({
                 },
                 {
                   path: '/agenda/audit/:id',
-                  name: 'auditDetail',
-                  component: AuditDetail,
+                  name: 'agendaDetail',
+                  component: Detail,
                 }
               ]
             },
@@ -74,7 +75,7 @@ const router = new Router({
                 {
                   path: '/agenda/ontime/:id',
                   name: 'onTimeDetail',
-                  component: OnTimeDetail,
+                  component: Detail,
                 }
               ]
             },
@@ -92,7 +93,7 @@ const router = new Router({
                 {
                   path: '/agenda/complete/:id',
                   name: 'ompleteDetail',
-                  component: CompleteDetail,
+                  component: Detail,
                 }
               ]
             }

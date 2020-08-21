@@ -30,10 +30,10 @@ export default {
   },
   methods: {
     menuTabs(data) {
-      if (!this.tabs.some(item => item.id === data.id)) {
-        data.id = data.id
+      if (!this.tabs.some(item => item.detailId === data.detailId)) {
+        data.detailId = data.detailId
         data.showName = data.name
-        data.path = '/agenda/ontime/' + data.id
+        data.path = '/agenda/ontime/' + data.detailId
         this.tabs.push(data)
       }
     },

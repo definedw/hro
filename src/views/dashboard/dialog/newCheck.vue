@@ -75,7 +75,8 @@
                         prop="dayNumber"
                         label="办理天数"
                         :rules="{required: ruleForm.detailType === '8965DCCFAA ' ? true : false, message: '办理天数为必填项', trigger: 'blur'}">
-            <el-input v-model.number="ruleForm.dayNumber"
+            <el-input v-model="ruleForm.dayNumber"
+                      @input.native="ruleForm.dayNumber=ruleForm.dayNumber.replace(/^[\D]/g, '')"
                       clearable
                       maxlength="2"
                       placeholder="办理天数"></el-input>

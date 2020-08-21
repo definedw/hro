@@ -4,7 +4,7 @@
       <el-col :span="14">
         <div class="header">
           <div class="header-background"></div>
-          <div class="header-title">{{ name }}的诉求</div>
+          <div class="header-title">{{ Detail.name }} 的诉求</div>
         </div>
         <div class="page-form">
           <el-form :model="Detail">
@@ -48,6 +48,12 @@
             <el-form-item prop="deptName"
                           label="化解单位">
               <el-input v-model="Detail.deptName"
+                        readonly></el-input>
+            </el-form-item>
+            <el-form-item v-if="Detail.rejectReason"
+                          prop="rejectReason"
+                          label="拒绝理由">
+              <el-input v-model="Detail.rejectReason"
                         readonly></el-input>
             </el-form-item>
 
@@ -105,6 +111,14 @@ export default {
     left: 0;
     bottom: 0;
     background: #ddd;
+    z-index: -1;
   }
+}
+.header-title {
+  height: 100%;
+  font-size: 16px;
+  z-index: 1;
+  line-height: 2;
+  color: #333;
 }
 </style>

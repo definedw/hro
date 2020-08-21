@@ -4,7 +4,7 @@
       <el-col :span="14">
         <div class="header">
           <div class="header-background"></div>
-          <div class="header-title">{{ name }}的诉求</div>
+          <div class="header-title">{{ Detail.name }} 的诉求</div>
         </div>
         <div class="page-form">
           <el-form :model="Detail">
@@ -55,6 +55,12 @@
               <el-input v-model="Detail.questionDescibe"
                         readonly></el-input>
             </el-form-item>
+            <el-form-item v-if="Detail.rejectReason"
+                          prop="rejectReason"
+                          label="拒绝理由">
+              <el-input v-model="Detail.rejectReason"
+                        readonly></el-input>
+            </el-form-item>
 
           </el-form>
         </div>
@@ -72,7 +78,7 @@ export default {
   },
   data() {
     return {
-
+      Detail: null
     }
   },
   methods: {
@@ -81,6 +87,7 @@ export default {
       const url = `/api/question/getOne/${id}`
       this.$http.get(url).then(res => {
         console.log('Agenda Detail data.', res)
+        this.Detail = res.list
       })
     }
   },
@@ -94,4 +101,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header {
+  height: 40px;
+  display: block;
+  padding: 5px;
+  margin-top: 15px;
+  line-height: 120%;
+  padding-left: 10px;
+  position: relative;
+  .header-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: #ddd;
+    z-index: -1;
+  }
+}
+.header-title {
+  height: 100%;
+  font-size: 16px;
+  z-index: 1;
+  line-height: 2;
+  color: #333;
+}
 </style>

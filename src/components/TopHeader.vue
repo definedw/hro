@@ -73,7 +73,6 @@ export default {
     }
   },
   created() {
-    this.getUserInfo()
   },
   methods: {
     goTag(item) {
@@ -127,7 +126,7 @@ export default {
     }
   },
   mounted() {
-    // this.getMenu()
+    this.getUserInfo()
   },
   watch: {
     '$route': {

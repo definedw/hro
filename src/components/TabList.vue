@@ -9,7 +9,7 @@
           <button class="page-nav-item"
                   v-for="(item, index) in tabs"
                   :key="item.id"
-                  :class="{ active: item.id == $route.params.id|| item.id == $route.query.id || item.key === $route.query.type}"
+                  :class="{ active: item.detailId == $route.params.id || item.detailId == $route.query.id}"
                   @click="goToTag(item)">
             {{item.showName}}
             <span @click.stop="closeTab(index, item)"

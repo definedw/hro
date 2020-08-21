@@ -58,6 +58,11 @@
               审核
             </a>
             <a class="cur"
+               @click="doneAudit(scope.row)">
+              办结
+            </a>
+
+            <a class="cur"
                v-if="scope.row.status === 4"
                @click="setDate(scope.row)">
               设置日期
@@ -74,17 +79,25 @@
                    @pageNext="next"
                    @pageSizeChange="handleSizeChange"
                    @pageHandleChange="handleCurrentChange"></PageInation>
+      <audit-dialog v-if="visible"
+                    :title="title"
+                    :id="id"
+                    :type="transfer"
+                    :visible="visible"
+                    @close="visible = false"
+                    @handleUpdate="handleUpdate"></audit-dialog>
     </div>
   </div>
 </template>
 
 <script>
-
+import AuditDialog from '../dialog/audit'
 import PageInation from '@/components/Pagination'
 export default {
   name: 'auditList',
   components: {
-    PageInation
+    PageInation,
+    AuditDialog
   },
   data() {
     return {
@@ -97,6 +110,8 @@ export default {
       // 在办2 办结 3
       status: 2,
       tableData: [],
+      deptType: parseInt(sessionStorage.getItem('deptType')),
+      visible: false
     }
   },
   methods: {
@@ -119,8 +134,17 @@ export default {
     showDetail(row) {
       this.$emit('menuTab', row)
       this.$router.push(
-        '/agenda/ontime/' + row.id
+        '/agenda/ontime/' + row.detailId
       )
+    },
+    handleUpdate(val) {
+      console.log('Handle update')
+      this.getList()
+    },
+    doneAudit(row) {
+      this.visible = true
+      this.title = '办结回复'
+      this.id = row.detailId
     },
     getList() {
       const url = `/api/question/getAllQuestion`

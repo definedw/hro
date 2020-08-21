@@ -4,7 +4,7 @@
       <el-col :span="14">
         <div class="header">
           <div class="header-background"></div>
-          <div class="header-title">{{ name }}的诉求</div>
+          <div class="header-title">{{ Detail.name }} 的诉求</div>
         </div>
         <div class="page-form">
           <el-form :model="Detail">
@@ -50,6 +50,12 @@
               <el-input v-model="Detail.deptName"
                         readonly></el-input>
             </el-form-item>
+            <el-form-item v-if="Detail.rejectReason"
+                          prop="rejectReason"
+                          label="拒绝理由">
+              <el-input v-model="Detail.rejectReason"
+                        readonly></el-input>
+            </el-form-item>
 
           </el-form>
         </div>
@@ -67,7 +73,7 @@ export default {
   },
   data() {
     return {
-      Detail: null
+      Detail: {}
     }
   },
   methods: {
@@ -85,6 +91,21 @@ export default {
   },
   activated() {
     this.getList()
+  },
+  watch: {
+    '$route': {
+      handler(to, from) {
+        const _ = this
+        if (to.params.id && from.params.id) {
+          if (to.params.id !== from.params.id) {
+            _.getList()
+          } else {
+            return
+          }
+        }
+      },
+      immediate: true
+    }
   }
 }
 </script>
@@ -105,6 +126,14 @@ export default {
     left: 0;
     bottom: 0;
     background: #ddd;
+    z-index: -1;
   }
+}
+.header-title {
+  height: 100%;
+  font-size: 16px;
+  z-index: 1;
+  line-height: 2;
+  color: #333;
 }
 </style>

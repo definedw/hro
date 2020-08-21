@@ -3,7 +3,7 @@
     <div class="page-tab">
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-menu :default-active="this.$route.path"
+          <el-menu :default-active="activeNames"
                    class="el-menu-vertical-demo"
                    :collapse="isCollapse"
                    @select="handleSelect"
@@ -11,15 +11,15 @@
                    text-color="#fff"
                    router
                    active-text-color="#ffd04b">
-            <div class="collapse"
+            <!-- <div class="collapse"
                  @click="isCollapse = !isCollapse">
               <span v-if="isCollapse"><i class="icon el-icon-arrow-right"></i></span>
               <span v-else><i class="icon el-icon-arrow-left"></i></span>
-            </div>
+            </div> -->
             <div v-for="item in menuList"
                  :key="item.index">
               <el-menu-item :route="{path: `${item.url}`}"
-                            :index="`${item.url}`">
+                            :index="`${item.index}`">
                 <i :class="item.icon"></i>
                 <span slot="title">{{ item.name }}</span>
               </el-menu-item>
@@ -46,13 +46,13 @@ const menuList = [
     name: '审核件'
   },
   {
-    url: '/agenda/ontime',
+    url: '/agenda/ontimeList',
     icon: 'el-icon-my-ontime',
     index: '1',
     name: '在办件'
   },
   {
-    url: '/agenda/complete',
+    url: '/agenda/completeList',
     icon: 'el-icon-my-complete',
     index: '2',
     name: '办结件'
@@ -70,30 +70,30 @@ export default {
     return {
       menuList: menuList,
       isCollapse: false,
-      tabs: []
+      tabs: [],
+      activeNames: '0'
     }
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log('Handle Select', key, keyPath)
-      switch (key) {
-        case '0':
-          this.mainName = '审核件'
-          break
-        case '1':
-          this.mainName = '在办件'
-          break
-        default:
-          this.mainName = '办结件'
-      }
-    }
+      this.activeNames = key
+    },
   },
-  activated() {
-    console.log('activated')
-    console.log(this.$route.path)
-    // if (this.$route.path === '/agenda') {
-    //   this.$router.push('/agenda/auditList')
-    // }
+  watch: {
+    '$route': {
+      handler(to, from) {
+        const _ = this
+        if (to.path.includes('audit')) {
+          _.activeNames = '0'
+        } else if (to.path.includes('ontime')) {
+          _.activeNames = '1'
+        } else {
+          _.activeNames = '2'
+        }
+      },
+      immediate: true
+    }
   }
 }
 </script>
