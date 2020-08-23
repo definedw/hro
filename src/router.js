@@ -9,6 +9,7 @@ import NotFound from './views/NotFound'
 import { DashBoard } from './views/dashboard'
 import { Agenda, Audit, InAudit, OnTime, Complete } from './views/agenda'
 import { AuditDetail, AuditList, OnTimeList, OnTimeDetail, CompleteList, CompleteDetail } from './views/agenda'
+import { AllCsv, CountCsv, SelfCsv, AllList, CountList, SelfList } from './views/overagenda'
 import { Detail } from './views/agenda'
 import { OverAgenda } from './views/overagenda'
 
@@ -102,7 +103,49 @@ const router = new Router({
         {
           path: '/overAgenda',
           name: 'overAgenda',
-          component: OverAgenda
+          redirect: '/overAgenda/allCsv',
+          component: OverAgenda,
+          children: [
+            {
+              path: '/overAgenda/allCsv',
+              name: 'allCsv',
+              redirect: '/overAgenda/allList',
+              component: AllCsv,
+              children: [
+                {
+                  path: '/overAgenda/allList',
+                  name: 'allList',
+                  component: AllList
+                }
+              ]
+            },
+            {
+              path: '/overAgenda/countCsv',
+              name: 'countCsv',
+              redirect: '/overAgenda/countList',
+              component: CountCsv,
+              children: [
+                {
+                  path: '/overAgenda/countList',
+                  name: 'countList',
+                  component: CountList
+                }
+              ]
+            },
+            {
+              path: '/overAgenda/selfCsv',
+              name: 'selfCsv',
+              redirect: '/overAgenda/selfList',
+              component: SelfCsv,
+              children: [
+                {
+                  path: '/overAgenda/selfList',
+                  name: 'selfList',
+                  component: SelfList
+                }
+              ]
+            },
+          ]
         },
       ]
     },

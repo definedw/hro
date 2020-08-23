@@ -1,7 +1,7 @@
 <template>
   <div>
-    <top-header></top-header>
-    <!-- <nav-menu></nav-menu> -->
+    <top-header :userName="userName"
+                :position="position"></top-header>
     <div class="main">
       <keep-alive>
         <router-view />
@@ -12,17 +12,34 @@
 
 <script>
 import TopHeader from '@/components/TopHeader'
-import NavMenu from '@/components/NavMenu'
 export default {
   name: 'home',
-  components: { TopHeader, NavMenu },
+  components: { TopHeader },
   data() {
     return {
-
+      userName: null,
+      position: null
     }
   },
-  moouted() {
-    console.log('home mouted')
+  methods: {
+    getUserInfo() {
+      const url = `/api/login/getAuthor`
+      this.$http.post(url, {}).then(res => {
+        console.log('User Info.', res)
+        if (res.flag) {
+          this.deptType = res.list.sysDept.deptType - 0
+          this.userName = res.list.sysStaff.staffName
+          this.position = res.list.sysDept.name
+          sessionStorage.setItem('deptType', this.deptType)
+          sessionStorage.setItem('isLogin', true)
+        }
+      }).catch(err => {
+        console.log('Get UserInfo Request Faild.', err)
+      })
+    },
+  },
+  mounted() {
+    this.getUserInfo()
   }
 }
 </script>

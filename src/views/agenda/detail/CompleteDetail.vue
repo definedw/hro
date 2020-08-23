@@ -61,6 +61,12 @@
               <el-input v-model="Detail.rejectReason"
                         readonly></el-input>
             </el-form-item>
+            <el-form-item v-if="Detail.detailDescribe"
+                          prop="detailDescribe"
+                          label="办结回复">
+              <el-input v-model="Detail.detailDescribe"
+                        readonly></el-input>
+            </el-form-item>
 
           </el-form>
         </div>

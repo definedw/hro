@@ -5,9 +5,11 @@
       <div class="page-tab">
         <div class="page-inner">
           <div class="page-info">
-            <el-row :gutter="20">
-              <el-col :span="4"
-                      v-if="deptType === 1">
+            <el-row :gutter="24"
+                    type="flex"
+                    justify="center">
+              <!-- v-if="deptType === 1" -->
+              <el-col :span="4">
                 <div class="inner">
                   <div class="inner-title">
                     诉求登记
@@ -45,12 +47,11 @@
           </div>
           <div class="page-content">
             <el-row :gutter="24"
-                    style="margin-left: 0;">
-              <el-col :span="12"
-                      :lg="18"
+                    class="page-content_inner">
+              <el-col :lg="20"
                       :md="20"
-                      style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;"
-                      :sm="24">
+                      :sm="24"
+                      style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;">
                 <div class="legend-box">
                   <el-row :gutter="15"
                           type="flex"
@@ -66,9 +67,9 @@
                                       start-placeholder="开始日期"
                                       end-placeholder="结束日期"></el-date-picker>
                     </el-col>
-                    <el-col :span="3">
+                    <el-col :span="3"
+                            style="text-align: right;">
                       <el-button type="primary"
-                                 style="width: 100%;text-align: center"
                                  @click="getMouthData()">按月统计</el-button>
                     </el-col>
                   </el-row>
@@ -76,8 +77,7 @@
                 <div id="main"
                      :style="{width: '100%', height: '300px'}"></div>
               </el-col>
-              <el-col :span="12"
-                      :lg="18"
+              <el-col :lg="20"
                       :md="20"
                       :sm="24"
                       style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;">
@@ -85,17 +85,19 @@
                   <el-row :gutter="15"
                           type="flex"
                           justify="end">
-                    <el-col :span="3">
+                    <el-col :span="3"
+                            style="text-align: right;">
                       <el-button type="primary"
                                  @click="getYearData('2018')">2018</el-button>
                     </el-col>
-                    <el-col :span="3">
+                    <el-col :span="3"
+                            style="text-align: right;">
                       <el-button type="primary"
                                  @click="getYearData('2019')">2019</el-button>
                     </el-col>
-                    <el-col :span="2">
+                    <el-col :span="3"
+                            style="text-align: right;">
                       <el-button type="primary"
-                                 style="width: 100%;"
                                  @click="getYearData('2020')">2020</el-button>
                     </el-col>
                   </el-row>
@@ -159,10 +161,17 @@ export default {
       xAxis2: [],
       yAxis2: [],
       yAxis3: [],
-      ratioData: []
+      ratioData: [],
+      isLogin: false,
+      userName: null,
+      position: null
     }
   },
   computed: {
+    computeLogin() {
+      const isLogin = sessionStorage.getItem('isLogin')
+      return isLogin
+    },
     options() {
       const _ = this
       let option = {
@@ -179,6 +188,9 @@ export default {
           right: '4%',
           bottom: '3%',
           containLabel: true
+        },
+        tooltip: {
+          trigger: 'axis',
         },
         xAxis: [
           {
@@ -221,6 +233,9 @@ export default {
           right: '4%',
           bottom: '3%',
           containLabel: true
+        },
+        tooltip: {
+          trigger: 'axis',
         },
         xAxis: [
           {
@@ -272,13 +287,17 @@ export default {
           bottom: '3%',
           containLabel: true
         },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
         legend: {
           left: 'right',
-          data: ['审核', '在办', '办结', '退回']
+          data: ['审核', '在办', '完结', '退回']
         },
         series: [
           {
-            name: '比例图',
+            name: '事件比例',
             type: 'pie',
             data: _.ratioData
           }
@@ -289,6 +308,9 @@ export default {
   },
   methods: {
     addCheckIn() {
+      if (this.deptType === 2) {
+        return
+      }
       this.visible = true
       this.title = '诉求登记'
     },
@@ -382,38 +404,28 @@ export default {
         mainThree.resize()
       })
     },
-    getUserInfo() {
-      const url = `/api/login/getAuthor`
-      this.$http.post(url, {}).then(res => {
-        console.log('User Info.', res)
-        if (res.flag) {
-          this.deptType = res.list.sysDept.deptType - 0
-        }
-      }).catch(err => {
-        console.log('Get UserInfo Request Faild.', err)
-      })
-    },
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     }
   },
   mounted() {
-    this.getUserInfo()
-    this.getHomeList()
-    this.getYearData()
-    this.getCount()
-    this.getRatioCount()
-    this.getMouthData()
+    if (this.computeLogin) {
+      this.getHomeList()
+      this.getYearData()
+      this.getCount()
+      this.getRatioCount()
+      this.getMouthData()
+    }
   },
   activated() {
-    this.getUserInfo()
-
-    this.getHomeList()
-    this.getYearData()
-    this.getCount()
-    this.getRatioCount()
-    this.getMouthData()
+    if (this.computeLogin) {
+      this.getHomeList()
+      this.getYearData()
+      this.getCount()
+      this.getRatioCount()
+      this.getMouthData()
+    }
   }
 }
 </script>
@@ -422,8 +434,12 @@ export default {
 .page-content {
   padding-top: 15px;
 }
-.el-range-editor {
-  width: 100% !important;
+.page-content_inner {
+  margin-left: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .inner {
   display: block;
@@ -459,6 +475,7 @@ export default {
     border-radius: 2px;
     border: solid 1px #ccc;
     text-align: center;
+    cursor: pointer;
   }
   .inner-count {
     padding-top: 80px;
@@ -474,5 +491,10 @@ export default {
       font-weight: 300;
     }
   }
+}
+</style>
+<style>
+.el-range-editor {
+  width: 100% !important;
 }
 </style>

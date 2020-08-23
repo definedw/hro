@@ -2,6 +2,13 @@
   background: url('~@/assets/icon/audit.svg') center no-repeat;
   background-size: cover;
 }
+.icon-audit {
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  display: inline-block;
+  background-image: url('~@/assets/icon/audit.svg');
+}
 .el-icon-my-audit:before {
   content: '\66ff';
   font-size: 14px;

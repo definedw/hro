@@ -2,7 +2,7 @@
   <div>
     <div class="page-tab">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :span="5">
           <el-menu :default-active="activeNames"
                    class="el-menu-vertical-demo"
                    :collapse="isCollapse"
@@ -27,7 +27,7 @@
 
           </el-menu>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="19">
           <div class="main">
             <router-view />
           </div>
@@ -41,19 +41,19 @@
 const menuList = [
   {
     url: '/agenda/auditList',
-    icon: 'el-icon-my-audit',
+    icon: 'el-icon-s-check',
     index: '0',
     name: '审核件'
   },
   {
     url: '/agenda/ontimeList',
-    icon: 'el-icon-my-ontime',
+    icon: 'el-icon-timer',
     index: '1',
     name: '在办件'
   },
   {
     url: '/agenda/completeList',
-    icon: 'el-icon-my-complete',
+    icon: 'el-icon-receiving',
     index: '2',
     name: '办结件'
   },

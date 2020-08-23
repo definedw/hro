@@ -1,15 +1,6 @@
 <template>
   <div>
     <div class="page-content">
-      <PageInation :pageSize="pageSize"
-                   :total="total"
-                   :pageNum="pageNum"
-                   position="top"
-                   :endNumber="endNumber"
-                   @pagePre="pre"
-                   @pageNext="next"
-                   @pageSizeChange="handleSizeChange"
-                   @pageHandleChange="handleCurrentChange"></PageInation>
       <el-table :data="tableData"
                 border>
         <el-table-column label="登记人"
@@ -162,6 +153,8 @@ export default {
         this.total = res.pagination.total
         this.totolPages = res.pagination.totolPages
         this.sorter = res.pagination.sorter
+        this.endNumber = res.list ? res.list.length : 0
+
 
         this.tableData = res.list || []
       })

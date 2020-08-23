@@ -12,7 +12,7 @@
                   :class="{ active: item.detailId == $route.params.id || item.detailId == $route.query.id}"
                   @click="goToTag(item)">
             {{item.showName}}
-            <span @click.stop="closeTab(index, item)"
+            <span @click="closeTab(index, item)"
                   class="close"></span>
           </button>
         </div>
@@ -32,16 +32,35 @@ export default {
       this.$router.push(tag.path)
     },
     closeTab(index) {
-      this.tabs.splice(index, 1)
-      if (!this.tabs.length) {
-        this.$router.replace(this.mainUrl)
-        return
+      try {
+        console.log('11111111111')
+        e.stopPropagation()
+        this.tabs.splice(index, 1)
+        if (!this.tabs.length) {
+          this.$router.replace(this.mainUrl)
+          return
+        }
+        if (index === 0) {
+          this.$router.replace(this.tabs[0].path)
+        } else {
+          this.$router.replace(this.tabs[index - 1].path)
+
+        }
+      } catch (e) {
+        console.log('2222222222')
+        window.event.cancelBubble = true
+        this.tabs.splice(index, 1)
+        if (!this.tabs.length) {
+          this.$router.replace(this.mainUrl)
+          return
+        }
+        if (index === 0) {
+          this.$router.replace(this.tabs[0].path)
+        } else {
+          this.$router.replace(this.tabs[index - 1].path)
+        }
       }
-      if (index === 0) {
-        this.$router.replace(this.tabs[0].path)
-      } else {
-        this.$router.replace(this.tabs[index - 1].path)
-      }
+
     }
   }
 }

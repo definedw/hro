@@ -11,9 +11,9 @@ const WINDOW_URL = window.location.host
 axios.defaults.timeout = 10000
 
 if (WINDOW_URL === '') {
-  axios.defaults.baseURL = '123.206'
-} else {
   axios.defaults.baseURL = 'http://39.96.87.185'
+} else {
+  axios.defaults.baseURL = 'http://kuerads.cn/'
 }
 console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
@@ -122,7 +122,7 @@ function sendRequest(method, url, data, meta) {
   const options = {
     get: 'params',
     post: 'data',
-    download: 'data',
+    download: 'params',
     delete: 'data'
   }
   return axios({
@@ -153,11 +153,11 @@ function aDelete(url, data) {
   return sendRequest('delete', url, data)
 }
 
-function download(url, data) {
+function download(url, params) {
   return axios({
     method: 'get',
     url,
-    data,
+    params,
     responseType: 'blob'
   }).catch(error => {
 

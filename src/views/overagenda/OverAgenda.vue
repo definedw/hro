@@ -1,95 +1,106 @@
 <template>
   <div>
     <div class="page-tab">
-      <div class="page-inner">
-        <div class="page-header">
-          <div class="page-header">导出报表
+      <el-row :gutter="20">
+        <el-col :span="5">
+          <el-menu :default-active="activeNames"
+                   class="el-menu-vertical-demo"
+                   :collapse="isCollapse"
+                   @select="handleSelect"
+                   background-color="#67B0DA"
+                   text-color="#fff"
+                   router
+                   active-text-color="#ffd04b">
+            <div v-for="item in menuList"
+                 :key="item.index">
+              <el-menu-item :route="{path: `${item.url}`}"
+                            :index="`${item.index}`">
+                <i :class="item.icon"></i>
+                <span slot="title">{{ item.name }}</span>
+              </el-menu-item>
+            </div>
+
+          </el-menu>
+        </el-col>
+        <el-col :span="19">
+          <div class="main">
+            <router-view />
           </div>
-        </div>
-        <div class="table-border">
-          <el-table :data="tableData"
-                    border>
-            <el-table-column prop="name"
-                             label="类别"></el-table-column>
-            <el-table-column prop="address">
-              <template slot-scope="scope">
-                <a class="cur"
-                   @click="exportCsv(scope.row.cId)">
-                  导出
-                </a>
-
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div>
+        </el-col>
+      </el-row>
     </div>
-
   </div>
 </template>
 
 <script>
+const menuList = [
+  {
+    url: '/overAgenda/allList',
+    icon: 'el-icon-menu',
+    index: '0',
+    name: '全部办理'
+  },
+  {
+    url: '/overAgenda/selfList',
+    icon: 'el-icon-s-custom',
+    index: '1',
+    name: '本单位办理'
+  },
+  {
+    url: '/overAgenda/countList',
+    icon: 'el-icon-tickets',
+    index: '2',
+    name: '办理数量'
+  }
+]
 export default {
-  name: 'overAgenda',
+  name: 'overagenda',
   data() {
     return {
-      tableData: [
-        {
-          name: '导出登记表',
-          cId: 1,
-        },
-        {
-          name: '导出在办和办结数',
-          cId: 2,
-        },
-        {
-          name: '导出月份统计',
-          cId: 3,
-        },
-        {
-          name: '导出登记模板',
-          cId: 4
-        },
-      ]
+      menuList: menuList,
+      isCollapse: false,
+      tabs: [],
+      activeNames: '0'
     }
   },
   methods: {
-    exportCsv(id) {
-      const url = ['/api/question/export', '/api/question/exportHomeCount', '/api/question/exportMonthCount', '/api/question/exportTemplate']
-      switch (id) {
-        case 1:
-          this.$http.download(url[0]).then(res => {
-            console.log('Export 1', res)
-          }).catch(err => {
-            console.log('Export Faild.', err)
-          })
-          break
-        case 2:
-          this.$http.download(url[1], { responseType: 'blob' }).then(res => {
-            console.log('Export 2', res)
-          }).catch(err => {
-            console.log('Export Faild.', err)
-          })
-          break
-        case 3:
-          this.$http.download(url[2], { responseType: 'blob' }).then(res => {
-            console.log('Export 3', res)
-          }).catch(err => {
-            console.log('Export Faild.', err)
-          })
-          break
-        default:
-          this.$http.download(url[3], { responseType: 'blob' }).then(res => {
-            console.log('Export 4', res)
-          }).catch(err => {
-            console.log('Export Faild.', err)
-          })
-          break
-      }
+    handleSelect(key, keyPath) {
+      console.log('Handle Select', key, keyPath)
+      this.activeNames = key
+    },
+  },
+  watch: {
+    '$route': {
+      handler(to, from) {
+        const _ = this
+        if (to.path.includes('all')) {
+          _.activeNames = '0'
+        } else if (to.path.includes('self')) {
+          _.activeNames = '1'
+        } else {
+          _.activeNames = '2'
+        }
+      },
+      immediate: true
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.collapse {
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  right: 5px;
+  z-index: 1;
+}
+.el-menu-vertical-demo {
+  position: relative;
+}
+.el-menu--collapse {
+  .collapse {
+    right: 0;
+  }
+}
 </style>

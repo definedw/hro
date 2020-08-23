@@ -11,7 +11,7 @@ module.exports = {
     open: true, //配置自动启动浏览器
     proxy: {
       '^/api': {
-        target: 'http://39.96.87.185',
+        target: 'http://kuerads.cn/',
         changeOrigin: true
       }
     },

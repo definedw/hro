@@ -13,7 +13,7 @@
       </div>
       <div class="user-info">
         <div class="text-link"
-             v-if="!isLogin">
+             v-if="!computeLogin">
           <span @click="navLogin"
                 class="link-text">登录</span><span>|</span><span @click="navRegister"
                 class="link-text">注册</span>
@@ -47,12 +47,11 @@
 
 export default {
   name: 'topHeader',
+  props: ['userName', 'position'],
   data() {
     return {
       activeIndex: '0',
       isLogin: false,
-      userName: null,
-      position: null,
       menuList: [
         {
           name: '首页',
@@ -66,22 +65,22 @@ export default {
         },
         {
           name: '数据报表',
-          url: '/overagenda',
+          url: '/overAgenda',
           index: '2'
         }
       ]
     }
   },
-  created() {
+  computed: {
+    computeLogin() {
+      const isLogin = sessionStorage.getItem('isLogin')
+      return isLogin
+    }
   },
   methods: {
     goTag(item) {
       this.activeIndex = item.index ? item.index : this.$route.query.index
       this.$router.push(`${item.url}`)
-      // this.$router.push({
-      //   path: `${item.url}`,
-      //   query: `${item.index}`
-      // })
     },
     navLogin() {
       this.$router.push({
@@ -91,20 +90,6 @@ export default {
     navRegister() {
       this.$router.push({
         path: '/register'
-      })
-    },
-    getUserInfo() {
-      const url = `/api/login/getAuthor`
-      this.$http.post(url, {}).then(res => {
-        console.log('User Info.', res)
-        if (res.flag) {
-          this.isLogin = true
-          this.userName = res.list.sysStaff.staffName
-          this.position = res.list.sysDept.name
-          sessionStorage.setItem('deptType', res.list.sysDept.deptType)
-        }
-      }).catch(err => {
-        console.log('Get UserInfo Request Faild.', err)
       })
     },
     getMenu() {
@@ -122,11 +107,11 @@ export default {
         this.isLogin = false
         this.$router.push('/login')
         sessionStorage.setItem('deptType', null)
+        sessionStorage.setItem('isLogin', false)
       })
     }
   },
   mounted() {
-    this.getUserInfo()
   },
   watch: {
     '$route': {

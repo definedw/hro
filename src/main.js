@@ -29,7 +29,8 @@ Vue.filter('UTCTime', function (value) {
     )
     let chinaDate = date.toDateString()
     let chinaDateArray = chinaDate.split(' ')
-    let displayDate = `${chinaDateArray[2]}/${chinaDateArray[1]}/${
+    let month = date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+    let displayDate = `${chinaDateArray[2]}-${month}-${
       chinaDateArray[3]
       }`
     return displayDate
