@@ -53,10 +53,10 @@
                       :sm="24"
                       style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;">
                 <div class="legend-box">
-                  <el-row :gutter="15"
+                  <el-row :gutter="20"
                           type="flex"
-                          justify="end">
-                    <el-col :span="9">
+                          justify="center">
+                    <el-col :span="6">
                       <el-date-picker class="date-picker-newClass"
                                       type="daterange"
                                       v-model="rangeDate"
@@ -67,10 +67,9 @@
                                       start-placeholder="开始日期"
                                       end-placeholder="结束日期"></el-date-picker>
                     </el-col>
-                    <el-col :span="3"
-                            style="text-align: right;">
+                    <el-col :span="2">
                       <el-button type="primary"
-                                 @click="getMouthData()">按月统计</el-button>
+                                 @click="getMouthData()">查询</el-button>
                     </el-col>
                   </el-row>
                 </div>
@@ -82,24 +81,20 @@
                       :sm="24"
                       style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;">
                 <div class="legend-box">
-                  <el-row :gutter="15"
+                  <el-row :gutter="20"
                           type="flex"
-                          justify="end">
-                    <el-col :span="3"
-                            style="text-align: right;">
-                      <el-button type="primary"
-                                 @click="getYearData('2018')">2018</el-button>
+                          justify="center">
+                    <el-col :span="6">
+                      <el-date-picker v-model="yearStr"
+                                      type="year"
+                                      placeholder="选择年">
+                      </el-date-picker>
                     </el-col>
-                    <el-col :span="3"
-                            style="text-align: right;">
+                    <el-col :span="2">
                       <el-button type="primary"
-                                 @click="getYearData('2019')">2019</el-button>
+                                 @click="getYearData()">查询</el-button>
                     </el-col>
-                    <el-col :span="3"
-                            style="text-align: right;">
-                      <el-button type="primary"
-                                 @click="getYearData('2020')">2020</el-button>
-                    </el-col>
+
                   </el-row>
                 </div>
                 <div id="mainTwo"
@@ -128,6 +123,7 @@ require('echarts/lib/chart/pie')
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/toolbox')
 require('echarts/lib/component/legend')
+require('echarts/lib/component/title')
 require('echarts/lib/component/markLine')
 
 export default {
@@ -153,7 +149,7 @@ export default {
       searchForm: {
         startDate: null,
         endDate: null,
-        yearStr: null
+
       },
       rangeDate: [],
       xAxis1: [],
@@ -164,7 +160,8 @@ export default {
       ratioData: [],
       isLogin: false,
       userName: null,
-      position: null
+      position: null,
+      yearStr: null
     }
   },
   computed: {
@@ -176,11 +173,8 @@ export default {
       const _ = this
       let option = {
         title: {
-          text: 'test',
-          show: true,
-          textStyle: {
-            fontSize: 16
-          }
+          text: '诉求类型办结数图',
+
         },
         color: ['#3398DB'],
         grid: {
@@ -209,7 +203,8 @@ export default {
           }
         ],
         yAxis: {
-          type: 'value'
+          type: 'value',
+          minInterval: 1
         },
         series: [{
           data: _.yAxis1,
@@ -223,6 +218,9 @@ export default {
       const _ = this
       let option = {
         color: ['#3398DB', '#4cabce'],
+        title: {
+          text: '月份办件数图',
+        },
         legend: {
           top: 20,
           right: '8%',
@@ -252,7 +250,8 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            minInterval: 1
           }
         ],
         series: [
@@ -277,10 +276,10 @@ export default {
     rOptions() {
       const _ = this
       let option = {
-        title: {
-          text: '比例图',
-          left: 'center'
-        },
+        // title: {
+        //   text: '各状态办件数占比图',
+        //   left: 'left'
+        // },
         grid: {
           left: '3%',
           right: '4%',
@@ -292,6 +291,7 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
+          orient: 'vertical',
           left: 'right',
           data: ['审核', '在办', '完结', '退回']
         },
@@ -346,9 +346,9 @@ export default {
         console.log('Questition Count.', res)
       })
     },
-    getYearData(str) {
+    getYearData() {
       const mainTwo = echarts.init(document.getElementById('mainTwo'))
-
+      const str = this.yearStr ? this.yearStr.toString().substring(11, 15) : ''
       const url = `/api/question/monthCount`
       this.$http.get(url, { yearString: str }).then(res => {
         console.log('Get Year Echart Data', res)
@@ -408,6 +408,11 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     }
+  },
+  beforeMount() {
+    const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') : null
+    console.log(dept)
+    this.deptType = dept
   },
   mounted() {
     if (this.computeLogin) {
@@ -494,7 +499,8 @@ export default {
 }
 </style>
 <style>
-.el-range-editor {
+.el-range-editor,
+.el-date-editor--year {
   width: 100% !important;
 }
 </style>

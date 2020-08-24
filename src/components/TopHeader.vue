@@ -107,7 +107,7 @@ export default {
         this.isLogin = false
         this.$router.push('/login')
         sessionStorage.setItem('deptType', null)
-        sessionStorage.setItem('isLogin', false)
+        sessionStorage.setItem('isLogin', 0)
       })
     }
   },
@@ -117,6 +117,8 @@ export default {
     '$route': {
       handler(to, from) {
         const _ = this
+        const cache = sessionStorage.getItem('isLogin')
+        
         _.menuList.map(v => {
           if (to.path.includes(v.url)) {
             this.activeIndex = v.index

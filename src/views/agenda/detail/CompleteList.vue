@@ -1,5 +1,33 @@
 <template>
   <div>
+    <div class="page-filter">
+      <el-col :lg="8"
+              :md="8">
+        <el-date-picker class="date-picker-newClass"
+                        type="daterange"
+                        v-model="rangeDate"
+                        range-separator="/"
+                        value-format="yyyy-MM-dd"
+                        format="yyyy-MM-dd"
+                        @change="timeChange"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"></el-date-picker>
+      </el-col>
+      <el-col :span="3"
+              :lg="2"
+              :md="2"
+              :sm="4">
+        <el-button type="primary"
+                   @click="getList">查询</el-button>
+      </el-col>
+      <el-col :span="3"
+              :lg="2"
+              :md="2"
+              :sm="4">
+        <el-button type="primary"
+                   @click="clearList">清除</el-button>
+      </el-col>
+    </div>
     <div class="page-content">
       <el-table :data="tableData"
                 border>
@@ -77,6 +105,11 @@ export default {
       sorter: 'name',
       status: 3,
       tableData: [],
+      rangeDate: [],
+      searchForm: {
+        startDate: null,
+        endDate: null
+      }
     }
   },
   methods: {
@@ -102,6 +135,10 @@ export default {
         '/agenda/complete/' + row.detailId
       )
     },
+    timeChange() {
+      this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
+      this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
+    },
     getList() {
       const url = `/api/question/getAllQuestion`
       const params = {
@@ -109,13 +146,15 @@ export default {
         pageSize: this.pageSize || 15,
         status: this.status || null,
         sorter: this.sorter || 'name',
-        total: this.total || null
+        total: this.total || null,
+        startDate: this.searchForm.startDate || '',
+        endDate: this.searchForm.endDate || ''
       }
       this.$http.get(url, params).then(res => {
         console.log('List all check in.', res)
-        this.pageNum = res.pagination.current
-        this.pageSize = res.pagination.pageSize
-        this.total = res.pagination.total
+        this.pageNum = res.pagination.current || 1
+        this.pageSize = res.pagination.pageSize || 15
+        this.total = res.pagination.total || 0
         this.totolPages = res.pagination.totolPages
         this.sorter = res.pagination.sorter
         this.endNumber = res.list ? res.list.length : 0
@@ -123,6 +162,11 @@ export default {
 
         this.tableData = res.list || []
       })
+    },
+    clearList() {
+      this.rangeDate = []
+      this.searchForm = Object.assign({}, this.$options.data().searchForm)
+      this.getList()
     },
   },
   mounted() {

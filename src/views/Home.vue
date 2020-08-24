@@ -30,11 +30,13 @@ export default {
           this.deptType = res.list.sysDept.deptType - 0
           this.userName = res.list.sysStaff.staffName
           this.position = res.list.sysDept.name
-          sessionStorage.setItem('deptType', this.deptType)
-          sessionStorage.setItem('isLogin', true)
+          setTimeout(() => {
+            sessionStorage.setItem('deptType', this.deptType)
+          }, 500)
         }
       }).catch(err => {
         console.log('Get UserInfo Request Faild.', err)
+        this.$router.push('/login')
       })
     },
   },

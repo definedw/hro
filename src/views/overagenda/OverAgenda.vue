@@ -11,7 +11,7 @@
                    text-color="#fff"
                    router
                    active-text-color="#ffd04b">
-            <div v-for="item in menuList"
+            <div v-for="item in computeMenuList"
                  :key="item.index">
               <el-menu-item :route="{path: `${item.url}`}"
                             :index="`${item.index}`">
@@ -35,16 +35,16 @@
 <script>
 const menuList = [
   {
-    url: '/overAgenda/allList',
-    icon: 'el-icon-menu',
-    index: '0',
-    name: '全部办理'
-  },
-  {
     url: '/overAgenda/selfList',
     icon: 'el-icon-s-custom',
-    index: '1',
+    index: '0',
     name: '本单位办理'
+  },
+  {
+    url: '/overAgenda/allList',
+    icon: 'el-icon-menu',
+    index: '1',
+    name: '全部办理'
   },
   {
     url: '/overAgenda/countList',
@@ -52,6 +52,14 @@ const menuList = [
     index: '2',
     name: '办理数量'
   }
+]
+const menuList1 = [
+  {
+    url: '/overAgenda/selfList',
+    icon: 'el-icon-s-custom',
+    index: '1',
+    name: '本单位办理'
+  },
 ]
 export default {
   name: 'overagenda',
@@ -61,6 +69,19 @@ export default {
       isCollapse: false,
       tabs: [],
       activeNames: '0'
+    }
+  },
+  computed: {
+    computeDept() {
+      const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') - 0 : null
+      return dept
+    },
+    computeMenuList() {
+      if (this.computeDept === 2) {
+        return menuList
+      } else {
+        return menuList1
+      }
     }
   },
   methods: {
@@ -74,9 +95,9 @@ export default {
       handler(to, from) {
         const _ = this
         if (to.path.includes('all')) {
-          _.activeNames = '0'
-        } else if (to.path.includes('self')) {
           _.activeNames = '1'
+        } else if (to.path.includes('self')) {
+          _.activeNames = '0'
         } else {
           _.activeNames = '2'
         }

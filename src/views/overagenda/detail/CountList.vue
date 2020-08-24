@@ -3,7 +3,7 @@
     <div class="page-content">
       <div class="page-filter">
         <el-row :gutter="20">
-          <el-col :lg="4"
+          <!-- <el-col :lg="4"
                   :md="4"
                   :sm="6">
             <el-select v-model="searchForm.status"
@@ -15,7 +15,7 @@
                          :label="item.name"
                          :value="item.id"></el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
           <el-col :lg="8"
                   :md="8">
             <el-date-picker class="date-picker-newClass"
@@ -169,8 +169,7 @@ export default {
       const url = `/api/question/exportHomeCount`,
         params = {
           startDate: this.searchForm.startDate,
-          endDate: this.searchForm.endDate,
-          status: this.searchForm.status
+          endDate: this.searchForm.endDate
         }
       this.$http.download(url, params).then(res => {
         console.log('Export All Csv', res)

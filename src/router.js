@@ -103,7 +103,7 @@ const router = new Router({
         {
           path: '/overAgenda',
           name: 'overAgenda',
-          redirect: '/overAgenda/allCsv',
+          redirect: '/overAgenda/selfCsv',
           component: OverAgenda,
           children: [
             {

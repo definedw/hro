@@ -305,32 +305,31 @@
           background: nth($secondary-color, 1);
         }
       }
+    }
+    .close {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      width: 20px;
+      height: 20px;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
 
-      .close {
+      &:before {
         position: absolute;
-        top: 5px;
-        right: 5px;
-        width: 20px;
-        height: 20px;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        margin-top: -4px;
+        margin-left: -4px;
+        content: '';
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3Ljc4MSA3Ljc4MSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogIzg4ODsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggaWQ9IngiIGNsYXNzPSJjbHMtMSIgZD0iTTE2MDEwLjg4OSwxNjc2Mi43MDdsLTMuMTg0LDMuMTg0LS43MDctLjcwNywzLjE4NC0zLjE4NC0zLjE4NC0zLjE4NC43MDctLjcwNywzLjE4NCwzLjE4NCwzLjE4NC0zLjE4NC43MDcuNzA3LTMuMTg0LDMuMTg0LDMuMTg0LDMuMTg0LS43MDcuNzA3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE2MDA2Ljk5OCAtMTY3NTguMTA5KSIvPgo8L3N2Zz4K')
+          no-repeat center center;
+      }
 
-        &:before {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 8px;
-          height: 8px;
-          margin-top: -4px;
-          margin-left: -4px;
-          content: '';
-          background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3Ljc4MSA3Ljc4MSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogIzg4ODsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggaWQ9IngiIGNsYXNzPSJjbHMtMSIgZD0iTTE2MDEwLjg4OSwxNjc2Mi43MDdsLTMuMTg0LDMuMTg0LS43MDctLjcwNywzLjE4NC0zLjE4NC0zLjE4NC0zLjE4NC43MDctLjcwNywzLjE4NCwzLjE4NCwzLjE4NC0zLjE4NC43MDcuNzA3LTMuMTg0LDMuMTg0LDMuMTg0LDMuMTg0LS43MDcuNzA3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE2MDA2Ljk5OCAtMTY3NTguMTA5KSIvPgo8L3N2Zz4K')
-            no-repeat center center;
-        }
-
-        &:hover {
-          background: #ddd;
-        }
+      &:hover {
+        background: #ddd;
       }
     }
   }

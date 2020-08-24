@@ -194,8 +194,10 @@ export default {
     exportAllCsv() {
       const url = `/api/question/export`,
         params = {
-          startDate: this.searchForm.startDate
-          , endDate: this.searchForm.endDate
+          startDate: this.searchForm.startDate,
+          endDate: this.searchForm.endDate,
+          status: this.searchForm.status,
+          type: 2
         }
       this.$http.download(url, params).then(res => {
         console.log('Export All Csv', res)

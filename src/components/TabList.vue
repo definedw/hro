@@ -6,15 +6,18 @@
       </h3>
       <div class="tab-wrap">
         <div class="page-nav-bar">
-          <button class="page-nav-item"
-                  v-for="(item, index) in tabs"
-                  :key="item.id"
-                  :class="{ active: item.detailId == $route.params.id || item.detailId == $route.query.id}"
-                  @click="goToTag(item)">
-            {{item.showName}}
-            <span @click="closeTab(index, item)"
+          <div v-for="(item, index) in tabs"
+               :key="item.id"
+               style="position:relative">
+            <button class="page-nav-item"
+                    :class="{ active: item.detailId == $route.params.id || item.detailId == $route.query.id}"
+                    @click="goToTag(item)">
+              {{item.showName}}
+            </button>
+            <span @click="closeTab($event,index, item)"
                   class="close"></span>
-          </button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -31,10 +34,11 @@ export default {
     goToTag(tag) {
       this.$router.push(tag.path)
     },
-    closeTab(index) {
-      try {
-        console.log('11111111111')
-        e.stopPropagation()
+    closeTab(event, index) {
+      console.log(event)
+      if (event.stopPropagation) {
+        console.log(111111)
+        event.stopPropagation()
         this.tabs.splice(index, 1)
         if (!this.tabs.length) {
           this.$router.replace(this.mainUrl)
@@ -46,8 +50,9 @@ export default {
           this.$router.replace(this.tabs[index - 1].path)
 
         }
-      } catch (e) {
-        console.log('2222222222')
+      } else if (window.event) {
+        console.log(1111112)
+
         window.event.cancelBubble = true
         this.tabs.splice(index, 1)
         if (!this.tabs.length) {
@@ -58,11 +63,14 @@ export default {
           this.$router.replace(this.tabs[0].path)
         } else {
           this.$router.replace(this.tabs[index - 1].path)
-        }
-      }
 
+        }
+      } else {
+        return
+      }
     }
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+</style>

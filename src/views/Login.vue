@@ -95,6 +95,7 @@ export default {
         if (valid) {
           _.$http.post(url, params).then(res => {
             console.log('Login right.', res)
+            sessionStorage.setItem('isLogin', 1)
             _.$router.push({
               path: '/dashboard'
             })

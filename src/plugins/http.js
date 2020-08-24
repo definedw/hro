@@ -8,10 +8,11 @@ let v = new Vue()
 
 const WINDOW_URL = window.location.host
 
+console.log(WINDOW_URL)
 axios.defaults.timeout = 10000
 
-if (WINDOW_URL === '') {
-  axios.defaults.baseURL = 'http://39.96.87.185'
+if (WINDOW_URL === '127.0.0.1:8080') {
+  axios.defaults.baseURL = 'http://kuerads.cn:8080/'
 } else {
   axios.defaults.baseURL = 'http://kuerads.cn/'
 }
@@ -21,7 +22,6 @@ axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(
   config => {
-    console.log('validate axios')
     const token = storage.getToken()
     token && (config.Authorization = token)
     return config
