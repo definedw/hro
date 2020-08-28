@@ -18,15 +18,15 @@
           <el-form-item prop="idCard"
                         label="身份证号码">
             <el-input v-model.trim="ruleForm.idCard"
-                      @input.native="ruleForm.idCard=ruleForm.idCard.replace(/^[\D]/g, '')"
+                      @input.native="modifyNum($event, ruleForm.idCard)"
                       placeholder="请输入身份证号码"
-                      maxlength="15"
+                      maxlength="18"
                       clearable></el-input>
           </el-form-item>
           <el-form-item prop="phone"
                         label="联系方式">
             <el-input v-model="ruleForm.phone"
-                      @input="ruleForm.phone = ruleForm.phone.replace(/^[\D]/g, '')"
+                      @input.native="modifyNum($event, ruleForm.phone)"
                       placeholder="请输入手机号码"
                       maxlength="11"></el-input>
           </el-form-item>
@@ -76,9 +76,9 @@
                         label="办理天数"
                         :rules="{required: ruleForm.detailType === '8965DCCFAA ' ? true : false, message: '办理天数为必填项', trigger: 'blur'}">
             <el-input v-model="ruleForm.dayNumber"
-                      @input.native="ruleForm.dayNumber=ruleForm.dayNumber.replace(/^[\D]/g, '')"
+                      @input.native="modifyNum($event, ruleForm.dayNumber)"
                       clearable
-                      maxlength="2"
+                      maxlength="3"
                       placeholder="办理天数"></el-input>
           </el-form-item>
 
@@ -114,7 +114,7 @@ export default {
     const checkId = (value, rule, callback) => {
       if (!this.ruleForm.idCard) {
         return callback(new Error('请输入您的身份证'))
-      } else if (this.ruleForm.idCard && this.ruleForm.idCard.toString().length < 15) {
+      } else if (this.ruleForm.idCard && this.ruleForm.idCard.toString().length < 18) {
         return callback(new Error('您输入的身份证信息有误，请核对再输入'))
       } else {
         callback()
@@ -180,6 +180,11 @@ export default {
           console.log('Validate Faild')
         }
       })
+    },
+    modifyNum(e, val) {
+      console.log(e.target.value, val)
+      e.target.value = e.target.value.replace(/[^\d]/g, '')
+      val = e.target.value
     },
     getDetailType() {
       const url = `/api/question/getQuestionDetailType`

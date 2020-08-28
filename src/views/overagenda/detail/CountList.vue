@@ -33,7 +33,7 @@
                   :md="2"
                   :sm="4">
             <el-button type="primary"
-                       @click="getList">查询</el-button>
+                       @click="getList('isSearch')">查询</el-button>
           </el-col>
           <el-col :span="3"
                   :lg="4"
@@ -145,12 +145,12 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     },
-    getList() {
+    getList(str) {
       const url = `/api/question/deptNameCountList`,
         params = {
           createDate: this.searchForm.startDate || '',
           endDate: this.searchForm.endDate || '',
-          current: this.pageNum,
+          current: str === 'isSearch' ? 1 : this.pageNum,
           pageSize: this.pageSize,
           sorter: this.sorter,
           status: this.searchForm.status || ''

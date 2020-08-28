@@ -15,14 +15,14 @@
       </el-col>
       <el-col :span="3"
               :lg="2"
-              :md="2"
+              :md="3"
               :sm="4">
         <el-button type="primary"
-                   @click="getList">查询</el-button>
+                   @click="getList('isSearch')">查询</el-button>
       </el-col>
       <el-col :span="3"
               :lg="2"
-              :md="2"
+              :md="3"
               :sm="4">
         <el-button type="primary"
                    @click="clearList">清除</el-button>
@@ -176,17 +176,17 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     },
-    getList() {
+    getList(str) {
       const url = `/api/question/auditList`
       const params = {
-        current: this.pageNum || 1,
+        current: str === 'isSearch' ? 1 : this.pageNum,
         pageSize: this.pageSize || 15,
         sorter: this.sorter || 'name',
-        total: this.total || null,
+        total: this.total || '',
         startDate: this.searchForm.startDate || '',
         endDate: this.searchForm.endDate || ''
       }
-      this.$http.post(url, params).then(res => {
+      this.$http.get(url, params).then(res => {
         console.log('List all check in.', res)
         this.pageNum = res.pagination.current || 1
         this.pageSize = res.pagination.pageSize || 15
@@ -201,6 +201,8 @@ export default {
     clearList() {
       this.rangeDate = []
       this.searchForm = Object.assign({}, this.$options.data().searchForm)
+      this.pageNum = 1
+      this.pageSize = 15
       this.getList()
 
     },

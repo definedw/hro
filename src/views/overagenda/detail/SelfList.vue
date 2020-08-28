@@ -105,6 +105,15 @@ const statusDict = [
     name: '办结',
     id: 2
   }
+  // ,
+  // {
+  //   name: '退回',
+  //   id: 3
+  // },
+  // {
+  //   name: '审核',
+  //   id: 4
+  // },
 ]
 const typeDict = [
   {
@@ -170,12 +179,12 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     },
-    getList() {
+    getList(str) {
       const url = `/api/question/getAll`,
         params = {
           createDate: this.searchForm.startDate || null,
           endDate: this.searchForm.endDate || null,
-          current: this.pageNum,
+          current: str === 'isSearch' ? 1 : this.pageNum,
           pageSize: this.pageSize,
           sorter: this.sorter,
           type: 1,

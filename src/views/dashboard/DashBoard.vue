@@ -10,35 +10,40 @@
                     justify="center">
               <!-- v-if="deptType === 1" -->
               <el-col :span="4">
-                <div class="inner">
-                  <div class="inner-title">
+                <a class="inner">
+                  <i class="iconX icon-register"></i>
+                  <div class="inner-title normal">
                     诉求登记
                   </div>
+                  <p class="desc"></p>
                   <div @click="addCheckIn"
                        class="inner-btn">诉求登记</div>
                   <!-- <el-button @click="addCheckIn"
                              type="primary">诉求登记</el-button> -->
-                </div>
+                </a>
               </el-col>
               <el-col :span="4">
-                <div class="inner">
-                  <div class="inner-title">
+                <a class="inner">
+                  <i class="iconX icon-ontime"></i>
+
+                  <div class="inner-title primary">
                     在办件数
                   </div>
                   <div class="inner-count"><span class="sub-text">在办件数：</span>{{onCount}}</div>
                   <!-- <el-button type="info">在办件数{{ onCount }}</el-button> -->
-                </div>
+                </a>
               </el-col>
               <el-col :span="4">
-                <div class="inner">
-                  <div class="inner-title">
+                <a class="inner">
+                  <i class="iconX icon-banjie"></i>
+                  <div class="inner-title success">
                     办结件数
                   </div>
                   <div class="inner-count"><span class="sub-text">办结件数：</span>{{isCount}}</div>
-                </div>
+                </a>
               </el-col>
               <el-col :span="8"
-                      style="padding-top: 15px;background: #d5e4ef;">
+                      style="padding-top: 15px;background: #f5f6f8;">
                 <div id="mainThree"
                      :style="{width: '100%', height: '242px'}"></div>
               </el-col>
@@ -169,6 +174,10 @@ export default {
       const isLogin = sessionStorage.getItem('isLogin')
       return isLogin
     },
+    computeDept() {
+      const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') - 0 : null
+      return dept
+    },
     options() {
       const _ = this
       let option = {
@@ -176,7 +185,7 @@ export default {
           text: '诉求类型办结数图',
 
         },
-        color: ['#3398DB'],
+        color: ['#2e5aa6'],
         grid: {
           left: '3%',
           right: '4%',
@@ -217,7 +226,7 @@ export default {
     eOptions() {
       const _ = this
       let option = {
-        color: ['#3398DB', '#4cabce'],
+        color: ['#2e5aa6', '#84AEEF'],
         title: {
           text: '月份办件数图',
         },
@@ -308,7 +317,7 @@ export default {
   },
   methods: {
     addCheckIn() {
-      if (this.deptType === 2) {
+      if (this.computeDept === 2) {
         return
       }
       this.visible = true
@@ -446,28 +455,70 @@ export default {
   align-items: center;
   text-align: center;
 }
+.iconX {
+  display: block;
+  width: 100%;
+  text-align: center;
+  height: 60px;
+
+  &.icon-register {
+    background: url('~@/assets/icon/icon-register.svg') center center no-repeat;
+    background-size: auto 50%;
+  }
+  &.icon-banjie {
+    background: url('~@/assets/icon/icon-banjie.svg') center center no-repeat;
+    background-size: auto 50%;
+  }
+  &.icon-ontime {
+    background: url('~@/assets/icon/icon-ontime.svg') center center no-repeat;
+    background-size: auto 50%;
+  }
+}
 .inner {
   display: block;
   padding: 10px;
   height: 260px;
-  background: #d5e4ef;
+  background: #f5f6f8;
   position: relative;
   text-align: center;
+  color: #302d46;
+  &:hover {
+    text-decoration: none;
+    background: #2e5aa6;
+    color: #fff;
+    .icon-register {
+      background: url('~@/assets/icon/icon-register_active.svg') center center
+        no-repeat;
+      background-size: auto 50%;
+    }
+    .icon-banjie {
+      background: url('~@/assets/icon/icon-banjie_active.svg') center center
+        no-repeat;
+      background-size: auto 50%;
+    }
+    .icon-ontime {
+      background: url('~@/assets/icon/icon-ontime_active.svg') center center
+        no-repeat;
+      background-size: auto 50%;
+    }
+  }
   .inner-title {
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     width: 100%;
     height: 40px;
     line-height: 40px;
+    font-weight: bold;
     font-size: 16px;
-    padding-left: 10px;
-    text-align: left;
-    color: #333;
-    font-weight: 400;
-    background: #8d8680;
+    text-align: center;
+    // &.primary {
+    //   background: #409eff;
+    // }
+    // &.success {
+    //   background: #67c23a;
+    // }
+    // &.normal {
+    //   background: #2969b2;
+    // }
   }
   .inner-btn {
     margin-top: 80px;
@@ -490,7 +541,6 @@ export default {
     text-align: center;
     font-size: 30px;
     font-weight: 700;
-    color: #000;
     .sub-text {
       font-size: 14px;
       font-weight: 300;
@@ -502,5 +552,9 @@ export default {
 .el-range-editor,
 .el-date-editor--year {
   width: 100% !important;
+}
+.el-button--primary {
+  /* background: #2e5aa6 !important;
+  border-radius: none !important; */
 }
 </style>

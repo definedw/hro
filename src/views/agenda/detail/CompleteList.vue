@@ -15,14 +15,14 @@
       </el-col>
       <el-col :span="3"
               :lg="2"
-              :md="2"
+              :md="3"
               :sm="4">
         <el-button type="primary"
-                   @click="getList">查询</el-button>
+                   @click="getList('isSearch')">查询</el-button>
       </el-col>
       <el-col :span="3"
               :lg="2"
-              :md="2"
+              :md="3"
               :sm="4">
         <el-button type="primary"
                    @click="clearList">清除</el-button>
@@ -109,7 +109,8 @@ export default {
       searchForm: {
         startDate: null,
         endDate: null
-      }
+      },
+      isSearch: false
     }
   },
   methods: {
@@ -139,10 +140,10 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     },
-    getList() {
+    getList(str) {
       const url = `/api/question/getAllQuestion`
       const params = {
-        current: this.pageNum || 1,
+        current: str === 'isSearch' ? 1 : this.pageNum,
         pageSize: this.pageSize || 15,
         status: this.status || null,
         sorter: this.sorter || 'name',
@@ -166,6 +167,8 @@ export default {
     clearList() {
       this.rangeDate = []
       this.searchForm = Object.assign({}, this.$options.data().searchForm)
+      this.pageNum = 1
+      this.pageSize = 15
       this.getList()
     },
   },

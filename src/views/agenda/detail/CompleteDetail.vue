@@ -4,7 +4,7 @@
       <el-col :span="14">
         <div class="header">
           <div class="header-background"></div>
-          <div class="header-title">{{ Detail.name }} 的诉求</div>
+          <div class="header-title">{{ Detail.name }} {{Detail.detailDescribe}} 的诉求</div>
         </div>
         <div class="page-form">
           <el-form :model="Detail">
@@ -55,17 +55,22 @@
               <el-input v-model="Detail.questionDescibe"
                         readonly></el-input>
             </el-form-item>
+            <el-form-item prop="questionDescibe"
+                          label="化解单位">
+              <el-input v-model="Detail.questionDescibe"
+                        readonly></el-input>
+            </el-form-item>
+            <el-form-item prop="detailDescribe"
+                          label="办结回复">
+              <el-input v-model="Detail.detailDescribe"
+                        readonly></el-input>
+            </el-form-item>
             <el-form-item v-if="Detail.rejectReason"
                           prop="rejectReason"
                           label="拒绝理由">
               <el-input v-model="Detail.rejectReason"
                         readonly></el-input>
-            </el-form-item>
-            <el-form-item v-if="Detail.detailDescribe"
-                          prop="detailDescribe"
-                          label="办结回复">
-              <el-input v-model="Detail.detailDescribe"
-                        readonly></el-input>
+              {{ Detail.detailDescribe }}
             </el-form-item>
 
           </el-form>
@@ -84,7 +89,9 @@ export default {
   },
   data() {
     return {
-      Detail: null
+      Detail: {
+        detailDescribe: 'test'
+      }
     }
   },
   methods: {
@@ -93,7 +100,8 @@ export default {
       const url = `/api/question/getOne/${id}`
       this.$http.get(url).then(res => {
         console.log('Agenda Detail data.', res)
-        this.Detail = res.list
+        this.Detail = Object.assign({}, res.list)
+        this.Detail.detailDescribe = 'nimdd'
       })
     }
   },

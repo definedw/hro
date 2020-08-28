@@ -2,7 +2,7 @@
   <div>
     <div class="top-header">
       <div class="top-background"></div>
-      <!-- <div class="index-logo"></div> -->
+      <div class="index-logo"></div>
       <div class="nav-tab">
         <div class="nav-item"
              v-for="item in menuList"
@@ -118,7 +118,7 @@ export default {
       handler(to, from) {
         const _ = this
         const cache = sessionStorage.getItem('isLogin')
-        
+
         _.menuList.map(v => {
           if (to.path.includes(v.url)) {
             this.activeIndex = v.index

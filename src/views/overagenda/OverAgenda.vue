@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="page-tab">
-      <el-row :gutter="20">
-        <el-col :span="5">
+      <el-row :gutter="24">
+        <el-col :span="4"
+                style="padding-right: 0">
           <el-menu :default-active="activeNames"
                    class="el-menu-vertical-demo"
                    :collapse="isCollapse"
                    @select="handleSelect"
-                   background-color="#67B0DA"
+                   background-color="#2e5aa6"
                    text-color="#fff"
                    router
                    active-text-color="#ffd04b">
@@ -22,7 +23,7 @@
 
           </el-menu>
         </el-col>
-        <el-col :span="19">
+        <el-col :span="20">
           <div class="main">
             <router-view />
           </div>
@@ -57,7 +58,7 @@ const menuList1 = [
   {
     url: '/overAgenda/selfList',
     icon: 'el-icon-s-custom',
-    index: '1',
+    index: '0',
     name: '本单位办理'
   },
 ]

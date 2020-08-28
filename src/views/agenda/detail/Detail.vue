@@ -29,6 +29,12 @@
               <el-input v-model="Detail.address"
                         readonly></el-input>
             </el-form-item>
+            <el-form-item prop="createTime"
+                          label="登记时间">
+              <el-input suffix-icon=""
+                        v-model="Detail.createTime"
+                        readonly></el-input>
+            </el-form-item>
             <el-form-item prop="questionType"
                           label="诉求类型">
               <el-input v-model="Detail.questionType"
@@ -54,6 +60,12 @@
                           prop="rejectReason"
                           label="拒绝理由">
               <el-input v-model="Detail.rejectReason"
+                        readonly></el-input>
+            </el-form-item>
+            <el-form-item v-if="Detail.detailDescribe"
+                          prop="detailDescribe"
+                          label="办结回复">
+              <el-input v-model="Detail.detailDescribe"
                         readonly></el-input>
             </el-form-item>
 
@@ -83,6 +95,7 @@ export default {
       this.$http.get(url).then(res => {
         console.log('Agenda Detail data.', res)
         this.Detail = res.list
+        this.Detail.createTime = this.Detail.createTime.toString().substring(0, 10)
       })
     }
   },
@@ -125,7 +138,7 @@ export default {
     right: 0;
     left: 0;
     bottom: 0;
-    background: #ddd;
+    background: #f8f8f8;
     z-index: -1;
   }
 }

@@ -114,6 +114,10 @@ export default {
 
 <style lang="scss" scoped>
 .login-btn {
+  width: 100%;
   text-align: center;
+  button {
+    width: 100%;
+  }
 }
 </style>

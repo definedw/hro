@@ -13,7 +13,7 @@
                         :rules="{required: true, message: '请先完结此流程', trigger: 'blur'}"
                         label="是否通过审批">
             <el-select v-model="ruleForm.isAuth"
-                       placeholder="化解单位"
+                       placeholder=""
                        clearable
                        filterable>
               <el-option v-for="item in authDict"
@@ -43,9 +43,9 @@
                         :rules="{required: true, message: '请填写办理天数', trigger: 'blur'}">
             <el-input v-model="eRuleForm.dayNumber"
                       clearable
-                      @input.native="eRuleForm.dayNumber=eRuleForm.dayNumber.replace(/^[\D]/g, '')"
+                      @input.native="modifyNum($event, eRuleForm.dayNumber)"
                       label="办理天数"
-                      limit="2"></el-input>
+                      limit="3"></el-input>
           </el-form-item>
 
         </el-form>
@@ -116,6 +116,11 @@ export default {
     }
   },
   methods: {
+    modifyNum(e, val) {
+      console.log(e.target.value, val)
+      e.target.value = e.target.value.replace(/[^\d]/g, '')
+      val = e.target.value
+    },
     modifySubmit() {
       const url = `/api/question/isAuditAuth`
       const eUrl = `/api/question/afreshAssign`

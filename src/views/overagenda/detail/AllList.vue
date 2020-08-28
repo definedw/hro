@@ -33,7 +33,7 @@
                   :md="2"
                   :sm="4">
             <el-button type="primary"
-                       @click="getList">查询</el-button>
+                       @click="getList('isSearch')">查询</el-button>
           </el-col>
           <el-col :span="3"
                   :lg="4"
@@ -105,6 +105,15 @@ const statusDict = [
     name: '办结',
     id: 2
   }
+  // ,
+  // {
+  //   name: '退回',
+  //   id: 3
+  // },
+  // {
+  //   name: '审核',
+  //   id: 4
+  // },
 ]
 const typeDict = [
   {
@@ -170,12 +179,12 @@ export default {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
     },
-    getList() {
+    getList(str) {
       const url = `/api/question/getAll`,
         params = {
           createDate: this.searchForm.startDate || null,
           endDate: this.searchForm.endDate || null,
-          current: this.pageNum,
+          current: str === 'isSearch' ? 1 : this.pageNum,
           pageSize: this.pageSize,
           sorter: this.sorter,
           type: 2,
@@ -194,11 +203,21 @@ export default {
     exportAllCsv() {
       const url = `/api/question/export`,
         params = {
-          startDate: this.searchForm.startDate,
+          startDate: this.searchForm.startDate || '',
           endDate: this.searchForm.endDate,
           status: this.searchForm.status,
           type: 2
         }
+      // const { startDate = '', endDate = '', status = '' } = this.searchForm
+      // const baseUrl = this.$http.baseURL()
+      // const eurl = `${baseUrl}api/question/export?startDate=${startDate}&endDate=${endDate}&status=${startDate}&type=2`
+      // console.log(eurl)
+      // // window.location.href = eurl
+      // const el = document.createElement('a')
+      // el.href = eurl
+      // const ela = document.body.appendChild(el)
+      // ela.click()
+      // document.removeChild(el)
       this.$http.download(url, params).then(res => {
         console.log('Export All Csv', res)
       }).catch(err => {
