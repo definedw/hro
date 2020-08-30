@@ -4,8 +4,7 @@
 
       <div class="login-box">
         <div class="login-logo">
-          <img src="../assets/logo.png"
-               alt="Top Education Institute" />
+          <img src="../assets/logo.png" />
         </div>
         <!-- <div class="login-head border-bottom">
           <h1>登 录</h1>

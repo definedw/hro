@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row :gutter="15">
-      <el-col :span="14">
+    <el-row :gutter="20">
+      <el-col :span="10">
         <div class="header">
           <div class="header-background"></div>
           <div class="header-title">{{ Detail.name }} 的诉求</div>
@@ -72,23 +72,84 @@
           </el-form>
         </div>
       </el-col>
+      <el-col :span="10"
+              v-if="Detail.list && Detail.list.length > 0">
+        <div class="header">
+          <div class="header-background"></div>
+          <div class="header-title">{{ Detail.name }} 办理详情</div>
+          <div class="page-form">
+            <div v-for="item in Detail.list"
+                 :key="item.id">
+              <el-form :model="item">
+                <el-form-item label="描述文件"
+                              v-if="item.images !== null">
+                  <div class="img-list">
+                    <div class="item"
+                         v-for="child in item.images"
+                         :key="child"><img @click="showDetail(child)"
+                           :src="child"
+                           alt=""></div>
+                  </div>
+                </el-form-item>
+                <el-form-item label="办理描述"
+                              v-if="item.content"
+                              prop="content">
+                  <el-input v-model="item.content"
+                            readonly></el-input>
+                </el-form-item>
+                <el-row :gutter="24">
+                  <el-col :span="12">
+                    <el-form-item label="办理人"
+                                  prop="addDate">
+                      <el-input :value="`${item.staffName}`"
+                                readonly></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="办理时间"
+                                  prop="addDate">
+                      <el-input :value="`${item.addDate.toString().substring(0,19).replace('T', ' ')}`"
+                                readonly></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+              </el-form>
+            </div>
+
+          </div>
+        </div>
+      </el-col>
     </el-row>
+    <img-dialog v-if="visible"
+                :imgUrl="imgUrl"
+                :visible="visible"
+                @close="visible = false"></img-dialog>
   </div>
 </template>
 
 <script>
 import PageInation from '@/components/Pagination'
+import ImgDialog from '../dialog/img'
 export default {
   name: 'agendaDetail',
   components: {
-    PageInation
+    PageInation,
+    ImgDialog
   },
   data() {
     return {
-      Detail: {}
+      Detail: {},
+      visible: false,
+      imgUrl: ''
     }
   },
   methods: {
+    showDetail(val) {
+      this.visible = true
+      this.imgUrl = val
+      console.log(1111111111)
+    },
     getList() {
       const id = this.$route.params.id
       const url = `/api/question/getOne/${id}`
@@ -96,6 +157,10 @@ export default {
         console.log('Agenda Detail data.', res)
         this.Detail = res.list
         this.Detail.createTime = this.Detail.createTime.toString().substring(0, 10)
+        this.SubDetail = res.list.list ? res.list.list.map(v => {
+          v.addDate.toString().substring(0, 10)
+          return v
+        }) : {}
       })
     }
   },
@@ -148,5 +213,25 @@ export default {
   z-index: 1;
   line-height: 2;
   color: #333;
+}
+.img-list {
+  &::after {
+    content: '';
+    clear: both;
+  }
+  .item {
+    float: left;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    margin-bottom: 5px;
+  }
+  img {
+    height: 100px;
+    width: 100%;
+    background: #ccc;
+    margin: 0 auto;
+    display: block;
+  }
 }
 </style>

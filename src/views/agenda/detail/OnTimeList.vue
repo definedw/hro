@@ -24,8 +24,7 @@
               :lg="2"
               :md="3"
               :sm="4">
-        <el-button type="primary"
-                   @click="clearList">清除</el-button>
+        <el-button @click="clearList">清除</el-button>
       </el-col>
     </div>
     <div class="page-content">
@@ -72,10 +71,13 @@
               详情
             </a>
             <a class="cur"
+               @click="handleAudit(scope.row)">
+              办理
+            </a>
+            <a class="cur"
                @click="doneAudit(scope.row)">
               办结
             </a>
-
             <a class="cur"
                v-if="scope.row.status === 4"
                @click="setDate(scope.row)">
@@ -100,18 +102,26 @@
                     :visible="visible"
                     @close="visible = false"
                     @handleUpdate="handleUpdate"></audit-dialog>
+      <upload-dialog v-if="uploadVisible"
+                     :id="id"
+                     :detailId="detailId"
+                     :visible="uploadVisible"
+                     @close="uploadVisible = false"
+                     @handleUpdate="handleUpdate"></upload-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import AuditDialog from '../dialog/audit'
+import UploadDialog from '../dialog/upload'
 import PageInation from '@/components/Pagination'
 export default {
   name: 'auditList',
   components: {
     PageInation,
-    AuditDialog
+    AuditDialog,
+    UploadDialog
   },
   data() {
     return {
@@ -126,11 +136,14 @@ export default {
       tableData: [],
       deptType: parseInt(sessionStorage.getItem('deptType')),
       visible: false,
+      uploadVisible: false,
       rangeDate: [],
       searchForm: {
         startDate: null,
         endDate: null
-      }
+      },
+      id: null,
+      detailId: null
     }
   },
   methods: {
@@ -164,6 +177,10 @@ export default {
       this.visible = true
       this.title = '办结回复'
       this.id = row.detailId
+    },
+    handleAudit(row) {
+      this.uploadVisible = true
+      this.id = row.id
     },
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''

@@ -22,7 +22,6 @@
              v-else>
           <div class="detail-info">
             <span class="link-text">{{ userName }}</span>
-            <span class="link-text">{{ position }}</span>
           </div>
           <span class="divider">|</span>
 

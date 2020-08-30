@@ -24,8 +24,7 @@
               :lg="2"
               :md="3"
               :sm="4">
-        <el-button type="primary"
-                   @click="clearList">清除</el-button>
+        <el-button @click="clearList">清除</el-button>
       </el-col>
     </div>
     <div class="page-content">

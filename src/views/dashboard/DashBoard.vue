@@ -302,7 +302,7 @@ export default {
         legend: {
           orient: 'vertical',
           left: 'right',
-          data: ['审核', '在办', '完结', '退回']
+          data: ['审核', '在办', '办结', '退回']
         },
         series: [
           {
