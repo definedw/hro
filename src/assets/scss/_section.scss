@@ -1,20 +1,21 @@
 /* top header */
 .top-header {
-  height: 76px;
   width: 100%;
   padding: 0 150px;
   display: block;
   position: relative;
   z-index: 1;
-  background: #dedede;
+  background: url('~@/assets/nav.png') no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding-top: 16%;
   .top-background {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    // background: url('~@/assets/top-header.png') no-repeat;
-    background: #2e5aa6;
+    // background: #2e5aa6;
     z-index: -1;
   }
   .top-link {
@@ -40,14 +41,14 @@
     }
   }
   .user-info {
-    float: right;
+    right: 150px;
+    bottom: 3%;
+    position: absolute;
     display: inline-block;
-    padding: 5px;
-    height: 100%;
     width: auto;
     font-size: 14px;
     line-height: 120%;
     z-index: 1;
-    color: #fff;
+    color: #333;
   }
 }

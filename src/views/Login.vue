@@ -3,12 +3,14 @@
     <div class="login-content">
 
       <div class="login-box">
-        <div class="login-logo">
-          <img src="../assets/logo.png" />
-        </div>
+        <!-- <div class="login-logo">
+        <img src="../assets/index_bg.png" />
+      </div> -->
         <!-- <div class="login-head border-bottom">
           <h1>登 录</h1>
         </div> -->
+        <div class="login-bg"></div>
+
         <div class="page-form">
           <el-form ref="ruleForm"
                    :rules="rules"
@@ -113,10 +115,20 @@ export default {
 
 <style lang="scss" scoped>
 .login-btn {
-  width: 100%;
+  width: 80%;
   text-align: center;
+  margin: 0 auto;
   button {
     width: 100%;
   }
+}
+.login-bg {
+  display: block;
+  position: absolute;
+  height: 400px;
+  top: -150px;
+  margin: -200px -50px;
+  background: url('../assets/index_bg.png') center center no-repeat;
+  background-size: contain;
 }
 </style>

@@ -49,9 +49,9 @@
                          prop="deptName"
                          show-overflow-tooltip></el-table-column>
         <el-table-column prop="noneCount"
-                         label="办结件"
+                         label="在办件"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column label="在办件"
+        <el-table-column label="办结件"
                          prop="isCount"
                          show-overflow-tooltip></el-table-column>
       </el-table>

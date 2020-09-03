@@ -8,10 +8,10 @@
                    class="el-menu-vertical-demo"
                    :collapse="isCollapse"
                    @select="handleSelect"
-                   background-color="#2e5aa6"
-                   text-color="#fff"
+                   background-color="#56ffff"
+                   text-color="#333"
                    router
-                   active-text-color="#ffd04b">
+                   active-text-color="#2e5aa6">
             <!-- <div class="collapse"
                  @click="isCollapse = !isCollapse">
               <span v-if="isCollapse"><i class="icon el-icon-arrow-right"></i></span>

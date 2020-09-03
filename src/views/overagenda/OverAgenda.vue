@@ -8,10 +8,10 @@
                    class="el-menu-vertical-demo"
                    :collapse="isCollapse"
                    @select="handleSelect"
-                   background-color="#2e5aa6"
-                   text-color="#fff"
+                   background-color="#56ffff"
+                   text-color="#333"
                    router
-                   active-text-color="#ffd04b">
+                   active-text-color="#2e5aa6">
             <div v-for="item in computeMenuList"
                  :key="item.index">
               <el-menu-item :route="{path: `${item.url}`}"

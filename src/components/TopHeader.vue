@@ -1,8 +1,11 @@
 <template>
   <div>
     <div class="top-header">
+      <!-- <img style="width: 100%; heigh: auto"
+           src="@/assets/nav.png"
+           alt=""> -->
       <div class="top-background"></div>
-      <div class="index-logo"></div>
+      <!-- <div class="index-logo"></div> -->
       <div class="nav-tab">
         <div class="nav-item"
              v-for="item in menuList"
@@ -132,19 +135,22 @@ export default {
 <style lang="scss" scoped>
 .nav-tab {
   display: inline-block;
+  position: absolute;
+  bottom: 0%;
 }
 .nav-item {
   display: inline-block;
 }
 a {
-  padding: 31px;
+  padding: 15px 30px;
   display: inline-block;
   font-size: 14px;
   width: 100%;
   height: 100%;
   text-align: center;
   line-height: 100%;
-  color: #fff;
+  color: #222;
+  font-weight: bold;
   text-decoration: none;
   position: relative;
   &.active {
@@ -155,13 +161,13 @@ a {
       bottom: 0;
       content: '';
       height: 3px;
-      background: #fbbf42;
+      background: #2e5aa6;
     }
   }
   &:hover {
     text-decoration: none;
-    background: #5594b1;
-    color: #fbbf42;
+    // background: #5594b1;
+    color: #fff;
   }
 }
 .link-text {
@@ -170,10 +176,7 @@ a {
   cursor: pointer;
 }
 .detail-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
+  display: inline-block;
   .link-text {
     display: block;
     text-align: left;
