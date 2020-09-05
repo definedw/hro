@@ -10,26 +10,24 @@
                     justify="center">
               <!-- v-if="deptType === 1" -->
               <el-col :span="4">
-                <a class="inner">
+                <a class="inner"
+                   @click="addCheckIn">
                   <i class="iconX icon-register"></i>
                   <div class="inner-title normal">
                     诉求登记
                   </div>
-                  <p class="desc"></p>
-                  <div @click="addCheckIn"
-                       class="inner-btn">诉求登记</div>
-                  <!-- <el-button @click="addCheckIn"
-                             type="primary">诉求登记</el-button> -->
+                  <!-- <div @click="addCheckIn"
+                       class="inner-btn">诉求登记</div> -->
+
                 </a>
               </el-col>
               <el-col :span="4">
                 <a class="inner">
                   <i class="iconX icon-ontime"></i>
-
                   <div class="inner-title primary">
                     在办件数
                   </div>
-                  <div class="inner-count"><span class="sub-text">在办件数：</span>{{onCount}}</div>
+                  <div class="inner-count">{{onCount}}</div>
                   <!-- <el-button type="info">在办件数{{ onCount }}</el-button> -->
                 </a>
               </el-col>
@@ -39,11 +37,20 @@
                   <div class="inner-title success">
                     办结件数
                   </div>
-                  <div class="inner-count"><span class="sub-text">办结件数：</span>{{isCount}}</div>
+                  <div class="inner-count">{{isCount}}</div>
+                </a>
+              </el-col>
+              <el-col :span="4">
+                <a class="inner">
+                  <i class="iconX icon-beyond"></i>
+                  <div class="inner-title success">
+                    超期件数
+                  </div>
+                  <div class="inner-count">{{outCount}}</div>
                 </a>
               </el-col>
               <el-col :span="8"
-                      style="padding-top: 15px;background: #f5f6f8;">
+                      style="padding-top: 15px;box-shadow: 0px 3px 8px #ccc;margin-right: 15px;">
                 <div id="mainThree"
                      :style="{width: '100%', height: '242px'}"></div>
               </el-col>
@@ -150,6 +157,7 @@ export default {
       title: null,
       onCount: null,
       isCount: null,
+      outCount: null,
       yearDict: ['2018', '2019', '2020'],
       searchForm: {
         startDate: null,
@@ -289,6 +297,7 @@ export default {
         //   text: '各状态办件数占比图',
         //   left: 'left'
         // },
+        color: ['#53c6e7', '#5c62d3', '#7ba7fa', '#f6694f'],
         grid: {
           left: '3%',
           right: '4%',
@@ -339,8 +348,9 @@ export default {
       const url = `/api/question/homeCount`
       this.$http.get(url).then(res => {
         console.log('Get Home Data List', res)
-        this.isCount = res.list.isCounts[0] ? res.list.isCounts[0] : '0'
-        this.onCount = res.list.noneCounts[0] ? res.list.noneCounts[0] : '0'
+        this.isCount = res.list.isCount
+        this.onCount = res.list.noneCount
+        this.outCount = res.list.outTimeCount
       }).catch(err => {
         console.log('Get Home Data Faild.', err)
       })
@@ -348,8 +358,8 @@ export default {
     getCount() {
       const url = `/api/question/questionTypeCount`
       const params = {
-        createDate: 'null',
-        endDate: 'null'
+        createDate: '',
+        endDate: ''
       }
       this.$http.get(url).then(res => {
         console.log('Questition Count.', res)
@@ -403,6 +413,8 @@ export default {
       }
       this.$http.get(url, params).then(res => {
         console.log('Ratio Count.', res)
+        this.isCount = res.list[2].value
+        this.onCount = res.list[1].value
         this.ratioData = res.list
         console.log(this.rOptions)
         mainThree.setOption(this.rOptions)
@@ -473,15 +485,20 @@ export default {
     background: url('~@/assets/icon/icon-ontime.svg') center center no-repeat;
     background-size: auto 50%;
   }
+  &.icon-beyond {
+    background: url('~@/assets/icon/icon-beyond.svg') center center no-repeat;
+    background-size: auto 50%;
+  }
 }
 .inner {
   display: block;
-  padding: 10px;
+  padding: 50px 10px 0px;
   height: 260px;
-  background: #f5f6f8;
+  background: #fff;
   position: relative;
   text-align: center;
   color: #302d46;
+  box-shadow: 0px 3px 8px #ccc;
   &:hover {
     text-decoration: none;
     background: #2e5aa6;
@@ -498,6 +515,11 @@ export default {
     }
     .icon-ontime {
       background: url('~@/assets/icon/icon-ontime_active.svg') center center
+        no-repeat;
+      background-size: auto 50%;
+    }
+    .icon-beyond {
+      background: url('~@/assets/icon/icon-beyond_active.svg') center center
         no-repeat;
       background-size: auto 50%;
     }
@@ -534,7 +556,6 @@ export default {
     cursor: pointer;
   }
   .inner-count {
-    padding-top: 80px;
     display: inline-block;
     vertical-align: baseline;
     width: 100%;

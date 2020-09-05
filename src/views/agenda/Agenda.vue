@@ -17,7 +17,7 @@
               <span v-if="isCollapse"><i class="icon el-icon-arrow-right"></i></span>
               <span v-else><i class="icon el-icon-arrow-left"></i></span>
             </div> -->
-            <div v-for="item in menuList"
+            <div v-for="item in computeMenuList"
                  :key="item.index">
               <el-menu-item :route="{path: `${item.url}`}"
                             :index="`${item.index}`">
@@ -39,6 +39,26 @@
 </template>
 
 <script>
+const menuList1 = [
+  {
+    url: '/agenda/auditList',
+    icon: 'el-icon-s-check',
+    index: '0',
+    name: '审核件'
+  },
+  {
+    url: '/agenda/ontimeList',
+    icon: 'el-icon-timer',
+    index: '1',
+    name: '在办件'
+  },
+  {
+    url: '/agenda/completeList',
+    icon: 'el-icon-receiving',
+    index: '2',
+    name: '办结件'
+  },
+]
 const menuList = [
   {
     url: '/agenda/auditList',
@@ -58,12 +78,12 @@ const menuList = [
     index: '2',
     name: '办结件'
   },
-  // {
-  //   url: '/agendaDetail/inaudit',
-  //   icon: 'el-icon-my-inaudit',
-  //   index: '3',
-  //   name: '审核件'
-  // },
+  {
+    url: '/agenda/allList',
+    icon: 'el-icon-receiving',
+    index: '3',
+    name: '所有件'
+  }
 ]
 export default {
   name: 'agenda',
@@ -73,6 +93,19 @@ export default {
       isCollapse: false,
       tabs: [],
       activeNames: '0'
+    }
+  },
+  computed: {
+    computeDept() {
+      const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') - 0 : null
+      return dept
+    },
+    computeMenuList() {
+      if (this.computeDept === 2) {
+        return menuList
+      } else {
+        return menuList1
+      }
     }
   },
   methods: {
@@ -89,8 +122,10 @@ export default {
           _.activeNames = '0'
         } else if (to.path.includes('ontime')) {
           _.activeNames = '1'
-        } else {
+        } else if (to.path.includes('complete')) {
           _.activeNames = '2'
+        } else {
+          _.activeNames = '3'
         }
       },
       immediate: true

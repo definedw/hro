@@ -54,8 +54,14 @@
         <el-table-column label="办结件"
                          prop="isCount"
                          show-overflow-tooltip></el-table-column>
+        <el-table-column label="超期未办结件"
+                         prop="noneOutTimeCount"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column label="超期办结件"
+                         prop="isOutTimeCount"
+                         show-overflow-tooltip></el-table-column>
       </el-table>
-      <PageInation :pageSize="pageSize"
+      <!-- <PageInation :pageSize="pageSize"
                    :total="total"
                    :pageNum="pageNum"
                    position="bottom"
@@ -63,7 +69,7 @@
                    @pagePre="pre"
                    @pageNext="next"
                    @pageSizeChange="handleSizeChange"
-                   @pageHandleChange="handleCurrentChange"></PageInation>
+                   @pageHandleChange="handleCurrentChange"></PageInation> -->
 
     </div>
 
@@ -150,17 +156,14 @@ export default {
         params = {
           createDate: this.searchForm.startDate || '',
           endDate: this.searchForm.endDate || '',
-          current: str === 'isSearch' ? 1 : this.pageNum,
-          pageSize: this.pageSize,
-          sorter: this.sorter,
           status: this.searchForm.status || ''
         }
       this.$http.get(url, params).then(res => {
         console.log('Query Count List data.', res)
-        this.pageNum = res.pagination.current || 1
-        this.pageSize = res.pagination.pageSize || 15
-        this.total = res.pagination.total || 0
-        this.endNumber = res.list ? res.list.length : 0
+        // this.pageNum = res.pagination.current || 1
+        // this.pageSize = res.pagination.pageSize || 15
+        // this.total = res.pagination.total || 0
+        // this.endNumber = res.list ? res.list.length : 0
 
         this.tableData = res.list ? res.list : []
       })

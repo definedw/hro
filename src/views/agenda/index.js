@@ -8,10 +8,12 @@ import Detail from './detail/Detail'
 import AuditList from './detail/AuditList'
 import OnTimeList from './detail/OnTimeList'
 import CompleteList from './detail/CompleteList'
+import All from './detail/All'
+import EAllList from './detail/AllList'
 // import AuditDetail from './detail/AuditDetail'
 // import OnTimeDetail from './detail/OnTimeDetail'
 // import CompleteDetail from './detail/CompleteDetail'
 
 export {
-  Agenda, Audit, InAudit, OnTime, Complete, Detail, AuditList, OnTimeList, CompleteList
+  Agenda, Audit, InAudit, OnTime, Complete, Detail, AuditList, OnTimeList, CompleteList, All, EAllList
 }
