@@ -36,10 +36,11 @@
                        @click="getList('isSearch')">查询</el-button>
           </el-col>
           <el-col :span="3"
-                  :lg="4"
+                  :lg="2"
                   :md="4"
                   :sm="6">
-            <el-button @click="exportAllCsv">导出全部</el-button>
+            <el-button type="primary"
+                       @click="exportAllCsv">导出</el-button>
           </el-col>
         </el-row>
       </div>

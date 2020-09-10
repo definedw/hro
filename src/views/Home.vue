@@ -27,12 +27,11 @@ export default {
       this.$http.post(url, {}).then(res => {
         console.log('User Info.', res)
         if (res.flag) {
-          this.deptType = res.list.sysDept.deptType - 0
+          this.deptType = res.list.sysDept.deptType - 0 
           this.userName = res.list.sysStaff.staffName
           this.position = res.list.sysDept.name
-          setTimeout(() => {
-            sessionStorage.setItem('deptType', this.deptType)
-          }, 500)
+          this.$bus.emit('deptType', this.deptType)
+          sessionStorage.setItem('deptType', this.deptType)
         }
       }).catch(err => {
         console.log('Get UserInfo Request Faild.', err)

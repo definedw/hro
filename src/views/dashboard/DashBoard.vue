@@ -22,7 +22,7 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner">
+                <a class="inner" @click="$router.push('/agenda/ontimeList')">
                   <i class="iconX icon-ontime"></i>
                   <div class="inner-title primary">
                     在办件数
@@ -32,7 +32,7 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner">
+                <a class="inner" @click="$router.push('/agenda/completeList')">
                   <i class="iconX icon-banjie"></i>
                   <div class="inner-title success">
                     办结件数
@@ -41,7 +41,7 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner">
+                <a class="inner" @click="$router.push('/agenda/ontimeList')">
                   <i class="iconX icon-beyond"></i>
                   <div class="inner-title success">
                     超期件数
@@ -60,6 +60,34 @@
           <div class="page-content">
             <el-row :gutter="24"
                     class="page-content_inner">
+              <el-col :lg="20"
+                      :md="20"
+                      :sm="24"
+                      style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;" :class="[computeDept === 2 ? 's' : 'hidden']">
+                <div class="legend-box">
+                  <el-row :gutter="20"
+                          type="flex"
+                          justify="center">
+                    <el-col :span="6">
+                      <el-date-picker class="date-picker-newClass"
+                                      type="daterange"
+                                      v-model="rangeDate1"
+                                      range-separator="/"
+                                      value-format="yyyy-MM-dd"
+                                      format="yyyy-MM-dd"
+                                      @change="timeChange1"
+                                      start-placeholder="开始日期"
+                                      end-placeholder="结束日期"></el-date-picker>
+                    </el-col>
+                    <el-col :span="2">
+                      <el-button type="primary"
+                                 @click="getDeptCount()">查询</el-button>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div id="main1"
+                     :style="{width: '100%', height: '300px'}"></div>
+              </el-col>
               <el-col :lg="20"
                       :md="20"
                       :sm="24"
@@ -142,7 +170,6 @@ export default {
   name: 'dashBoard',
   components: { CheckIn },
   data() {
-    const deptType = sessionStorage.getItem('deptType') - 0
     return {
       deptType: null,
       /* pageniation */
@@ -158,23 +185,29 @@ export default {
       onCount: null,
       isCount: null,
       outCount: null,
-      yearDict: ['2018', '2019', '2020'],
       searchForm: {
         startDate: null,
         endDate: null,
-
+      },
+      searchForm1: {
+        startDate: null,
+        endDate: null,
       },
       rangeDate: [],
+      rangeDate1: [],
       xAxis1: [],
       yAxis1: [],
       xAxis2: [],
       yAxis2: [],
       yAxis3: [],
+      xAxis3: [],
+      yAxis4: [],
+      yAxis5: [],
       ratioData: [],
       isLogin: false,
       userName: null,
-      position: null,
-      yearStr: null
+      yearStr: null,
+      test:null
     }
   },
   computed: {
@@ -183,7 +216,7 @@ export default {
       return isLogin
     },
     computeDept() {
-      const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') - 0 : null
+      const dept = this.deptType ? this.deptType : null
       return dept
     },
     options() {
@@ -290,6 +323,65 @@ export default {
       }
       return option
     },
+    eOptions1() {
+      const _ = this
+      let option = {
+        color: ['#2e5aa6', '#84AEEF'],
+        title: {
+          text: '单位在办和办结数图',
+        },
+        legend: {
+          top: 20,
+          right: '8%',
+          data: ['在办件', '办结件']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        tooltip: {
+          trigger: 'axis',
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: _.xAxis3,
+            axisLabel: {
+              margin: 8,
+              interval: 0,//解决代码
+              textStyle: {
+                color: "#676767"
+              }
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            minInterval: 1
+          }
+        ],
+        series: [
+          {
+            name: '在办件',
+            type: 'bar',
+            barGap: 0,
+            barWidth: '50%',
+            data: _.yAxis5
+          },
+          {
+            name: '办结件',
+            type: 'bar',
+            barGap: 0,
+            barWidth: '50%',
+            data: _.yAxis4
+          },
+        ]
+      }
+      return option
+    },
     rOptions() {
       const _ = this
       let option = {
@@ -343,6 +435,33 @@ export default {
       }).catch(err => {
         console.log('Loading DashBoard Data Faild.')
       })
+    },
+    getDeptCount() {
+      const mainId = document.getElementById('main1')
+      if (mainId) {
+        const main = echarts.init(mainId)
+        this.test = main
+        const url = `/api/question/deptNameCount`,
+        params = {
+          startDate: this.searchForm1.startDate || '',
+          endDate: this.searchForm1.endDate || ''
+        }
+          this.$http.get(url, params).then(res => {
+          console.log('Query Dept Count Data.', res)
+          const { deptNames = [], isCounts = [], noneCounts = [] } = res.list
+          this.xAxis3 = deptNames
+          this.yAxis4 = noneCounts
+          this.yAxis5 = isCounts
+          main.setOption(this.eOptions1)
+        }).catch(err => {
+          console.log(err)
+        })
+        window.addEventListener('resize', () => {
+          main.resize()
+        })
+      } else {
+        return
+      }
     },
     getHomeList() {
       const url = `/api/question/homeCount`
@@ -428,35 +547,60 @@ export default {
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
+    },
+    timeChange1() {
+      this.searchForm1.startDate = this.rangeDate1 ? this.rangeDate1[0] + '' : ''
+      this.searchForm1.endDate = this.rangeDate1 ? this.rangeDate1[1] + '' : ''
     }
-  },
-  beforeMount() {
-    const dept = sessionStorage.getItem('deptType') ? sessionStorage.getItem('deptType') : null
-    console.log(dept)
-    this.deptType = dept
   },
   mounted() {
     if (this.computeLogin) {
+       this.$bus.on('deptType', (deptType) => {
+        this.$nextTick(() => {
+          this.deptType = deptType
+        })
+      })
       this.getHomeList()
       this.getYearData()
       this.getCount()
+      this.getDeptCount()
       this.getRatioCount()
       this.getMouthData()
     }
   },
   activated() {
     if (this.computeLogin) {
+      this.$bus.on('deptType', (deptType) => {
+        this.$nextTick(() => {
+          this.deptType = deptType
+        })
+    })
       this.getHomeList()
       this.getYearData()
-      this.getCount()
-      this.getRatioCount()
       this.getMouthData()
+      this.getCount()
+      this.getDeptCount()
+      this.getRatioCount()
+    }
+  },
+  watch: {
+    deptType(newVal, val) {
+      if (newVal === 2) {
+        this.$nextTick(() => {
+          this.test.resize()
+        })
+      } else {
+        return
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.hidden {
+  display: none;
+}
 .page-content {
   padding-top: 15px;
 }

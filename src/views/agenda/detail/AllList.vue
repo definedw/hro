@@ -1,6 +1,19 @@
 <template>
   <div>
     <div class="page-filter">
+      <el-col :lg="4"
+              :md="4"
+              :sm="6">
+        <el-select v-model="searchForm.deptId"
+                   placeholder="所属单位"
+                   clearable
+                   filterable>
+          <el-option v-for="item in deptDict"
+                     :key="item.id"
+                     :label="item.name"
+                     :value="item.id"></el-option>
+        </el-select>
+      </el-col>
       <el-col :lg="8"
               :md="8">
         <el-date-picker class="date-picker-newClass"
@@ -119,8 +132,10 @@ export default {
       rangeDate: [],
       searchForm: {
         startDate: null,
-        endDate: null
-      }
+        endDate: null,
+        deptId: null
+      },
+      deptDict: null
     }
   },
   computed: {
@@ -174,7 +189,8 @@ export default {
           pageSize: this.pageSize,
           sorter: this.sorter,
           type: 2,
-          status: this.searchForm.status || ''
+          status: this.searchForm.status || '',
+          deptId: this.searchForm.deptId
         }
       this.$http.get(url, params).then(res => {
         console.log('Query All List data.', res)
@@ -184,6 +200,13 @@ export default {
         this.endNumber = res.list ? res.list.length : 0
 
         this.tableData = res.list ? res.list : []
+      })
+    },
+    getTreeList() {
+      const url = `/api/sysDept/treeList`
+      this.$http.post(url, {}).then(res => {
+        console.log('Get Tree List.', res)
+        this.deptDict = res.list || []
       })
     },
     clearList() {
@@ -207,6 +230,7 @@ export default {
   },
   mounted() {
     this.getList()
+    this.getTreeList()
   }
 }
 </script>

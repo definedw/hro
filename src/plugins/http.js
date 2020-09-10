@@ -12,9 +12,9 @@ console.log(WINDOW_URL)
 axios.defaults.timeout = 10000
 
 if (WINDOW_URL === '127.0.0.1:8080') {
-  axios.defaults.baseURL = 'http://kuerads.cn:8080/'
+  axios.defaults.baseURL = 'http://xizhoujiedao.cn:8080/'
 } else {
-  axios.defaults.baseURL = 'http://kuerads.cn/'
+  axios.defaults.baseURL = 'http://xizhoujiedao.cn/'
 }
 console.log('init', process.env.NODE_ENV, axios.defaults.baseURL)
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
