@@ -80,6 +80,22 @@
                @click="setDate(scope.row)">
               设置日期
             </a>
+            <a class="cur">
+              <el-popover placement="top"
+                          width="160"
+                          v-model="popVisible">
+                <p>确定删除该申请？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini"
+                             type="text"
+                             @click="popVisible = false">取消</el-button>
+                  <el-button type="primary"
+                             size="mini"
+                             @click="deleteCheck(scope.row)">确定</el-button>
+                </div>
+                <span slot="reference">删除</span>
+              </el-popover>
+            </a>
           </template>
         </el-table-column>
       </el-table>
@@ -126,6 +142,7 @@ export default {
       deptType: parseInt(sessionStorage.getItem('deptType')),
       id: null,
       visible: false,
+      popVisible: false,
       rangeDate: [],
       searchForm: {
         startDate: null,
@@ -170,6 +187,19 @@ export default {
       this.$router.push(
         '/agenda/audit/' + row.detailId
       )
+    },
+    deleteCheck(val) {
+      const url = `/api/question/deleteQuestion`
+      this.$http.get(url, { questionId: val.id }).then(res => {
+        console.log('Delete Data Success')
+        this.$message.success(`${res.msg}`)
+        setTimeout(() => {
+          this.getList()
+        }, 1500)
+      }).catch(err => {
+        console.log('Delete Faild.', err)
+        // this.$message.error(`${err.msg}`)
+      })
     },
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''

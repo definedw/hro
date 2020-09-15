@@ -7,6 +7,9 @@
 export default {}
 </script>
 <style lang="scss">
+#app {
+  overflow: hidden;
+}
 * {
   word-break: break-word;
 }

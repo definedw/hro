@@ -33,10 +33,10 @@
         <el-table-column label="登记人"
                          prop="name"
                          show-overflow-tooltip>
-                        <template slot-scope="scope">
-                          <span :class="scope.row.outTimeStatus == 0 ? 'green' : 'red'"></span><span>{{ scope.row.name }}</span>
-                        </template>
-                         </el-table-column>
+          <template slot-scope="scope">
+            <span :class="scope.row.outTimeStatus == 0 ? 'green' : 'red'"></span><span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="address"
                          label="住址"
                          show-overflow-tooltip></el-table-column>
@@ -86,6 +86,22 @@
                v-if="scope.row.status === 4"
                @click="setDate(scope.row)">
               设置日期
+            </a>
+            <a class="cur">
+              <el-popover placement="top"
+                          width="160"
+                          v-model="popVisible">
+                <p>确定删除该申请？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini"
+                             type="text"
+                             @click="popVisible = false">取消</el-button>
+                  <el-button type="primary"
+                             size="mini"
+                             @click="deleteCheck(scope.row)">确定</el-button>
+                </div>
+                <span slot="reference">删除</span>
+              </el-popover>
             </a>
           </template>
         </el-table-column>
@@ -141,6 +157,7 @@ export default {
       ],
       deptType: parseInt(sessionStorage.getItem('deptType')),
       visible: false,
+      popVisible: false,
       uploadVisible: false,
       rangeDate: [],
       searchForm: {
@@ -190,6 +207,19 @@ export default {
     timeChange() {
       this.searchForm.startDate = this.rangeDate ? this.rangeDate[0] + '' : ''
       this.searchForm.endDate = this.rangeDate ? this.rangeDate[1] + '' : ''
+    },
+    deleteCheck(val) {
+      const url = `/api/question/deleteQuestion`
+      this.$http.get(url, { questionId: val.id }).then(res => {
+        console.log('Delete Data Success')
+        this.$message.success(`${res.msg}`)
+        setTimeout(() => {
+          this.getList()
+        }, 1500)
+      }).catch(err => {
+        console.log('Delete Faild.', err)
+        // this.$message.error(`${err.msg}`)
+      })
     },
     getList(str) {
       const url = `/api/question/getAllQuestion`

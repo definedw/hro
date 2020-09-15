@@ -45,7 +45,11 @@
                 border>
         <el-table-column label="登记人"
                          prop="name"
-                         show-overflow-tooltip></el-table-column>
+                         show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span :class="scope.row.outTimeStatus == 0 ? 'green' : 'red'"></span><span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="address"
                          label="住址"
                          show-overflow-tooltip></el-table-column>
@@ -236,4 +240,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.green {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: green;
+  margin-right: 5px;
+}
+.red {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f00;
+  margin-right: 5px;
+}
 </style>
