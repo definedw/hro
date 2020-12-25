@@ -22,7 +22,8 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner" @click="$router.push('/agenda/ontimeList')">
+                <a class="inner"
+                   @click="$router.push('/agenda/ontimeList')">
                   <i class="iconX icon-ontime"></i>
                   <div class="inner-title primary">
                     在办件数
@@ -32,7 +33,8 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner" @click="$router.push('/agenda/completeList')">
+                <a class="inner"
+                   @click="$router.push('/agenda/completeList')">
                   <i class="iconX icon-banjie"></i>
                   <div class="inner-title success">
                     办结件数
@@ -41,7 +43,8 @@
                 </a>
               </el-col>
               <el-col :span="4">
-                <a class="inner" @click="$router.push('/agenda/ontimeList')">
+                <a class="inner"
+                   @click="$router.push('/agenda/ontimeList')">
                   <i class="iconX icon-beyond"></i>
                   <div class="inner-title success">
                     超期件数
@@ -63,7 +66,8 @@
               <el-col :lg="20"
                       :md="20"
                       :sm="24"
-                      style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;" :class="[computeDept === 2 ? 's' : 'hidden']">
+                      style="border: solid 1px #ccc;padding-top: 15px;margin-top: 15px;"
+                      :class="[computeDept === 2 ? 's' : 'hidden']">
                 <div class="legend-box">
                   <el-row :gutter="20"
                           type="flex"
@@ -207,7 +211,7 @@ export default {
       isLogin: false,
       userName: null,
       yearStr: null,
-      test:null
+      test: null
     }
   },
   computed: {
@@ -442,16 +446,16 @@ export default {
         const main = echarts.init(mainId)
         this.test = main
         const url = `/api/question/deptNameCount`,
-        params = {
-          startDate: this.searchForm1.startDate || '',
-          endDate: this.searchForm1.endDate || ''
-        }
-          this.$http.get(url, params).then(res => {
+          params = {
+            startDate: this.searchForm1.startDate || '',
+            endDate: this.searchForm1.endDate || ''
+          }
+        this.$http.get(url, params).then(res => {
           console.log('Query Dept Count Data.', res)
           const { deptNames = [], isCounts = [], noneCounts = [] } = res.list
           this.xAxis3 = deptNames
-          this.yAxis4 = noneCounts
-          this.yAxis5 = isCounts
+          this.yAxis4 = isCounts
+          this.yAxis5 = noneCounts
           main.setOption(this.eOptions1)
         }).catch(err => {
           console.log(err)
@@ -555,7 +559,7 @@ export default {
   },
   mounted() {
     if (this.computeLogin) {
-       this.$bus.on('deptType', (deptType) => {
+      this.$bus.on('deptType', (deptType) => {
         this.$nextTick(() => {
           this.deptType = deptType
         })
@@ -574,7 +578,7 @@ export default {
         this.$nextTick(() => {
           this.deptType = deptType
         })
-    })
+      })
       this.getHomeList()
       this.getYearData()
       this.getMouthData()

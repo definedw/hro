@@ -13,6 +13,8 @@ axios.defaults.timeout = 10000
 
 if (WINDOW_URL === '127.0.0.1:8080') {
   // axios.defaults.baseURL = 'http://xizhoujiedao.cn:8080/'
+  axios.defaults.baseURL = 'http://xizhoujiedao.cn/'
+} else if (WINDOW_URL === 'http://kuerads.cn' || WINDOW_URL === 'kuerads.cn') {
   axios.defaults.baseURL = 'http://kuerads.cn:8080/'
 } else {
   axios.defaults.baseURL = 'http://xizhoujiedao.cn/'

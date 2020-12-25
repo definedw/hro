@@ -32,7 +32,11 @@
             </el-form-item>
           </el-form>
         </div>
+        
       </div>
+      <div class="login-foot">
+          <el-link class="login-link" href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" underline="false">湘ICP备2020018033号-1</el-link>
+        </div>
 
     </div>
   </div>
@@ -130,5 +134,17 @@ export default {
   margin: -200px -50px;
   background: url('../assets/index_bg.png') center center no-repeat;
   background-size: contain;
+}
+.login-foot {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  line-height: 120px;
+  background: rgba(0,0,0,0.2);
+  text-align: center;
+  .login-link {
+    color: #000;
+  }
 }
 </style>
